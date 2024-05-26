@@ -52,11 +52,11 @@ namespace BY.Business
                 var result = await _unitOfWork.ScheduleRepository.RemoveAsync(schedule);
                 if (result)
                 {
-                    return new BusinessResult(Const.SUCCESS_REMOVE_CODE, Const.SUCCESS_REMOVE_MSG);
+                    return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
                 }
                 else
                 {
-                    return new BusinessResult(Const.FAIL_REMOVE_CODE, Const.FAIL_REMOVE_MSG);
+                    return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
                 }
             }
             catch (Exception e)
@@ -72,11 +72,11 @@ namespace BY.Business
                 var result = await _unitOfWork.ScheduleRepository.GetAllAsync();
                 if (result != null)
                 {
-                    return new BusinessResult(Const.SUCCESS_GET_CODE, Const.SUCCESS_CREATE_MSG, result);
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
                 }
                 else
                 {
-                    return new BusinessResult(Const.FAIL_GET_CODE, Const.FAIL_GET_MSG);
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
             }
             catch (Exception e)
@@ -92,11 +92,11 @@ namespace BY.Business
                 var result = await _unitOfWork.ScheduleRepository.GetByIdAsync(idSchedule);
                 if (result != null)
                 {
-                    return new BusinessResult(Const.SUCCESS_GET_CODE, Const.SUCCESS_GET_MSG, result);
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
                 }
                 else
                 {
-                    return new BusinessResult(Const.FAIL_GET_CODE, Const.FAIL_GET_MSG);
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
             }
             catch (Exception e)
