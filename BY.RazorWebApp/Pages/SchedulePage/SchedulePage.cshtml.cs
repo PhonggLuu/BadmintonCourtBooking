@@ -1,5 +1,7 @@
 using BY.Business;
 using BY.Data.Models;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BY.RazorWebApp.Pages.SchedulePage
@@ -7,14 +9,23 @@ namespace BY.RazorWebApp.Pages.SchedulePage
     public class SchedulePageModel : PageModel
     {
         private readonly IScheduleBusiness _scheduleBusiness = new ScheduleBusiness();
+        public string? Error { get; set; }
 
-        List<Schedule> schedules {  get; set; }
-        public void OnGet()
+        public List<Schedule>? Schedule { get; private set; }
+        public async Task OnGetAsync()
         {
-            
-        }
-        public async void  GetAllSchedulesAsync() { 
-            var result = await _scheduleBusiness.GetALlSchedule();
+            if (!ModelState.IsValid)
+            {
+                var result = await _scheduleBusiness.GetALlSchedule();
+                if (result != null || result?.Status == 1)
+                {
+                    Schedule = result.Data as List<Schedule>;
+                }
+                else
+                {
+                    Error = result?.Message;
+                }
+            }
         }
     }
 }
