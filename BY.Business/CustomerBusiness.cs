@@ -1,4 +1,4 @@
-﻿using BY.Busniness.Base;
+﻿using BY.Business.Base;
 using BY.Common;
 using BY.Data;
 using BY.Data.Currency;
