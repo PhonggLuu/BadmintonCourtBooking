@@ -8,7 +8,7 @@ namespace BY.Business
 {
     public interface IScheduleBusiness
     {
-        Task<BusinessResult> GetALlSchedule();
+        Task<BusinessResult> GetAllSchedule();
         Task<BusinessResult> CreateSchedule(Schedule schedule);
         Task<BusinessResult> UpdateSchedule(Schedule schedule);
         Task<BusinessResult> DeleteSchedule(Schedule schedule);
@@ -65,7 +65,7 @@ namespace BY.Business
             }
         }
 
-        public async Task<BusinessResult> GetALlSchedule()
+        public async Task<BusinessResult> GetAllSchedule()
         {
             try
             {

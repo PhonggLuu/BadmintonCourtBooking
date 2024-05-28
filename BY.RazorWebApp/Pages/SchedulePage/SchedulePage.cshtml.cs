@@ -16,7 +16,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         {
             if (!ModelState.IsValid)
             {
-                var result = await _scheduleBusiness.GetALlSchedule();
+                var result = await _scheduleBusiness.GetAllSchedule();
                 if (result != null || result?.Status == 1)
                 {
                     Schedule = result.Data as List<Schedule>;

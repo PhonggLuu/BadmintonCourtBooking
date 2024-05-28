@@ -7,7 +7,8 @@ namespace BY.Data
     {
         private Net1704_221_2_BYContext _unitOfWorkContext;
         private ScheduleRepository _scheduleRepository;
-        private BookingRepositoty _bookingRepositoty;
+        private BookingRepository _bookingRepository;
+        private CustomerRepository _customerRepository;
         public UnitOfWork()
         {
 
@@ -19,11 +20,18 @@ namespace BY.Data
                 return _scheduleRepository ??= new Repository.ScheduleRepository();
             }
         }
-        public BookingRepositoty BookingRepositoty
+        public BookingRepository BookingRepositoty
         {
             get
             {
-                return _bookingRepositoty ??= new Repository.BookingRepositoty();
+                return _bookingRepository ??= new Repository.BookingRepository();
+            }
+        }
+        public CustomerRepository CustomerRepository
+        {
+            get
+            {
+                return _customerRepository ??= new Repository.CustomerRepository();
             }
         }
     }

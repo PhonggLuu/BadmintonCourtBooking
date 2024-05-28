@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BY.Data.Repository
 {
-    public class BookingRepositoty : GenericRepository<Booking>
+    public class BookingRepository : GenericRepository<Booking>
     {
-        public BookingRepositoty()
+        public BookingRepository()
         {
         }
     }
