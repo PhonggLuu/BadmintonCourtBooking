@@ -11,6 +11,10 @@ public partial class Court
 
     public string Name { get; set; }
 
+    public string Image { get; set; }
+
+    public string Description { get; set; }
+
     public bool? IsInUse { get; set; }
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();

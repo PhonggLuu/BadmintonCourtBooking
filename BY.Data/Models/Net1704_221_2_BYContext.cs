@@ -75,9 +75,7 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.ToTable("Court");
 
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
-            entity.Property(e => e.Name)
-                .HasMaxLength(200)
-                .IsFixedLength();
+            entity.Property(e => e.Name).HasMaxLength(200);
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -103,9 +101,7 @@ public partial class Net1704_221_2_BYContext : DbContext
         {
             entity.ToTable("Schedule");
 
-            entity.Property(e => e.ScheduleId)
-                .ValueGeneratedNever()
-                .HasColumnName("ScheduleID");
+            entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
