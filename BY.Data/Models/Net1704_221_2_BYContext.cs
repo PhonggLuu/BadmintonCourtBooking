@@ -8,10 +8,6 @@ namespace BY.Data.Models;
 
 public partial class Net1704_221_2_BYContext : DbContext
 {
-    public Net1704_221_2_BYContext()
-    {
-    }
-
     public Net1704_221_2_BYContext(DbContextOptions<Net1704_221_2_BYContext> options)
         : base(options)
     {
@@ -28,10 +24,9 @@ public partial class Net1704_221_2_BYContext : DbContext
     public virtual DbSet<Schedule> Schedules { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=(localhost);initial catalog=efast;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("data source=vulns-space;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
@@ -75,9 +70,7 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.ToTable("Court");
 
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
-            entity.Property(e => e.Name)
-                .HasMaxLength(200)
-                .IsFixedLength();
+            entity.Property(e => e.Name).HasMaxLength(200);
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -103,9 +96,7 @@ public partial class Net1704_221_2_BYContext : DbContext
         {
             entity.ToTable("Schedule");
 
-            entity.Property(e => e.ScheduleId)
-                .ValueGeneratedNever()
-                .HasColumnName("ScheduleID");
+            entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");

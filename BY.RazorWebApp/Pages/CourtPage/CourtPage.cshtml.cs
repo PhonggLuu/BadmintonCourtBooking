@@ -8,22 +8,49 @@ namespace BY.RazorWebApp.Pages.CourtPage
     public class CourtPageModel : PageModel
     {
         private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
-        public string? Error { get; set; }
+        public string Message { get; set; } = default;
+        [BindProperty]
+        public Court court { get; set; } = default;
+        public List<Court> courts { get; set; } = new List<Court>();
 
-        public List<Court>? Courts { get; private set; }
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            if (!ModelState.IsValid)
+            courts = this.GetCourt();
+        }
+
+        public void OnPost()
+        {
+            this.SaveCurrency();
+        }
+
+        public void OnDelete()
+        {
+        }
+
+
+        private List<Court> GetCourt()
+        {
+            var courtResult = _courtBusiness.GetAllCourt();
+
+            if (courtResult.Status > 0 && courtResult.Result.Data != null)
             {
-                var result = await _courtBusiness.GetAllCourt();
-                if (result != null || result?.Status == 1)
-                {
-                    Courts = result.Data as List<Court>;
-                }
-                else
-                {
-                    Error = result?.Message;
-                }
+                var courts = (List<Court>)courtResult.Result.Data;
+                return courts;
+            }
+            return new List<Court>();
+        }
+
+        private void SaveCurrency()
+        {
+            var courtResult = _courtBusiness.Save(this.court);
+
+            if (courtResult != null)
+            {
+                this.Message = courtResult.Result.Message;
+            }
+            else
+            {
+                this.Message = "Error system";
             }
         }
     }
