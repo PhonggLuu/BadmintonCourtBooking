@@ -57,13 +57,13 @@ namespace BY.Busniness
                 //var currencies = _DAO.GetAll();
                 //var customers = await _DAO.GetAllAsync();
                 var customers = await _unitOfWork.CustomerRepository.GetAllAsync();
-                if (customers == null)
+                if (customers != null)
                 {
-                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG);
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, customers);
                 }
                 else
                 {
-                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, customers);
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
             }
             catch (Exception ex)
