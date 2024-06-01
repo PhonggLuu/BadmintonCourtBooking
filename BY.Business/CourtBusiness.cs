@@ -35,7 +35,7 @@ namespace BY.Business
         {
             try
             {
-                var courts = await _UnitOfWork.CourtRepository.GetAllAsync();
+                var courts = await _UnitOfWork.courtRepository.GetAllAsync();
                 if (courts != null)
                 {
                     return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, courts);
@@ -55,7 +55,7 @@ namespace BY.Business
         {
             try
             {
-                var court = await _UnitOfWork.CourtRepository.GetByIdAsync(id);
+                var court = await _UnitOfWork.courtRepository.GetByIdAsync(id);
                 if (court != null)
                 {
                     return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, court);
@@ -75,9 +75,9 @@ namespace BY.Business
         {
             try
             {
-                _UnitOfWork.CourtRepository.PrepareCreate(court);
+                _UnitOfWork.courtRepository.PrepareCreate(court);
 
-                var result = await _UnitOfWork.CourtRepository.CreateAsync(court);
+                var result = await _UnitOfWork.courtRepository.CreateAsync(court);
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -97,7 +97,7 @@ namespace BY.Business
         {
             try
             {
-                var result = await _UnitOfWork.CourtRepository.UpdateAsync(court);
+                var result = await _UnitOfWork.courtRepository.UpdateAsync(court);
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
@@ -117,14 +117,14 @@ namespace BY.Business
         {
             try
             {
-                var court = await _UnitOfWork.CourtRepository.GetByIdAsync(id);
+                var court = await _UnitOfWork.courtRepository.GetByIdAsync(id);
                 if (court == null)
                 {
                     return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
                 }
                 else
                 {
-                    var result = await _UnitOfWork.CourtRepository.RemoveAsync(court);
+                    var result = await _UnitOfWork.courtRepository.RemoveAsync(court);
                     if (result)
                     {
                         return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);

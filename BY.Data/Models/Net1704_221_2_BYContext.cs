@@ -8,10 +8,6 @@ namespace BY.Data.Models;
 
 public partial class Net1704_221_2_BYContext : DbContext
 {
-    public Net1704_221_2_BYContext()
-    {
-    }
-
     public Net1704_221_2_BYContext(DbContextOptions<Net1704_221_2_BYContext> options)
         : base(options)
     {
@@ -26,12 +22,15 @@ public partial class Net1704_221_2_BYContext : DbContext
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
+    public Net1704_221_2_BYContext()
+    {
+
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=DESKTOP-12VUSI0\\SQLEXPRESS;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("data source=DESKTOP-AU0I9CL;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>

@@ -1,30 +1,60 @@
-using BY.Business;
-using BY.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+    using BY.Business;
+    using BY.Data.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BY.RazorWebApp.Pages.CourtPage
-{
-    public class CourtPageModel : PageModel
+    namespace BY.RazorWebApp.Pages.CourtPage
     {
-        private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
-        public string? Error { get; set; }
-
-        public List<Court>? Courts { get; private set; }
-        public async Task OnGetAsync()
+        public class CourtPageModel : PageModel
         {
-            if (!ModelState.IsValid)
+            private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
+            public string Message { get; set; } = default;
+            [BindProperty]
+            public Court Court { get; set; } = default;
+            public List<Court> courts { get; set; } = new List<Court>();
+
+            public void OnGet()
             {
-                var result = await _courtBusiness.GetAllCourt();
-                if (result != null || result?.Status == 1)
+                courts = this.GetCourt();
+            
+            }
+
+            public IActionResult OnPost()
+            {
+                this.SaveCourt();
+                return RedirectToPage();
+            }
+
+            public void OnDelete()
+            {
+            }
+
+
+            private List<Court> GetCourt()
+            {
+                var courtResult = _courtBusiness.GetAllCourt();
+
+                if (courtResult.Status > 0 && courtResult.Result.Data != null)
                 {
-                    Courts = result.Data as List<Court>;
+                    var courts = (List<Court>)courtResult.Result.Data;
+                    return courts;
+                }
+                return new List<Court>();
+            }
+
+            private void SaveCourt()
+            {
+                var courtResult = _courtBusiness.Save(this.Court);
+
+                if (courtResult != null)
+                {
+                    this.Message = courtResult.Result.Message;
+                
                 }
                 else
                 {
-                    Error = result?.Message;
+                    this.Message = "Error system";
                 }
             }
         }
     }
-}
