@@ -9,8 +9,8 @@ namespace BY.Data
         private ScheduleRepository _scheduleRepository;
         private BookingRepository _bookingRepository;
         private CustomerRepository _customerRepository;
+        private BookingDetailRepository _bookingDetailRepository;
         private CourtRepository _courseRepository;
-        
         public UnitOfWork()
         {
 
@@ -35,6 +35,20 @@ namespace BY.Data
             get
             {
                 return _customerRepository ??= new Repository.CustomerRepository();
+            }
+        }
+        public BookingDetailRepository BookingDetailRepository
+        {
+            get
+            {
+                return _bookingDetailRepository ??= new Repository.BookingDetailRepository();
+            }
+        }
+        public CourtRepository CourtRepository
+        {
+            get
+            {
+                return _courseRepository ??= new Repository.CourtRepository();
             }
         }
     }

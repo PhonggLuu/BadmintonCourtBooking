@@ -1,57 +1,60 @@
-using BY.Business;
-using BY.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+    using BY.Business;
+    using BY.Data.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BY.RazorWebApp.Pages.CourtPage
-{
-    public class CourtPageModel : PageModel
+    namespace BY.RazorWebApp.Pages.CourtPage
     {
-        private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
-        public string Message { get; set; } = default;
-        [BindProperty]
-        public Court court { get; set; } = default;
-        public List<Court> courts { get; set; } = new List<Court>();
-
-        public void OnGet()
+        public class CourtPageModel : PageModel
         {
-            courts = this.GetCourt();
-        }
+            private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
+            public string Message { get; set; } = default;
+            [BindProperty]
+            public Court Court { get; set; } = default;
+            public List<Court> courts { get; set; } = new List<Court>();
 
-        public void OnPost()
-        {
-            this.SaveCurrency();
-        }
-
-        public void OnDelete()
-        {
-        }
-
-
-        private List<Court> GetCourt()
-        {
-            var courtResult = _courtBusiness.GetAllCourt();
-
-            if (courtResult.Status > 0 && courtResult.Result.Data != null)
+            public void OnGet()
             {
-                var courts = (List<Court>)courtResult.Result.Data;
-                return courts;
+                courts = this.GetCourt();
+            
             }
-            return new List<Court>();
-        }
 
-        private void SaveCurrency()
-        {
-            var courtResult = _courtBusiness.Save(this.court);
-
-            if (courtResult != null)
+            public IActionResult OnPost()
             {
-                this.Message = courtResult.Result.Message;
+                this.SaveCourt();
+                return RedirectToPage();
             }
-            else
+
+            public void OnDelete()
             {
-                this.Message = "Error system";
+            }
+
+
+            private List<Court> GetCourt()
+            {
+                var courtResult = _courtBusiness.GetAllCourt();
+
+                if (courtResult.Status > 0 && courtResult.Result.Data != null)
+                {
+                    var courts = (List<Court>)courtResult.Result.Data;
+                    return courts;
+                }
+                return new List<Court>();
+            }
+
+            private void SaveCourt()
+            {
+                var courtResult = _courtBusiness.Save(this.Court);
+
+                if (courtResult != null)
+                {
+                    this.Message = courtResult.Result.Message;
+                
+                }
+                else
+                {
+                    this.Message = "Error system";
+                }
             }
         }
     }
-}

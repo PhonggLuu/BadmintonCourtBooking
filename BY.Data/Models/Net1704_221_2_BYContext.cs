@@ -22,9 +22,13 @@ public partial class Net1704_221_2_BYContext : DbContext
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
+    public Net1704_221_2_BYContext()
+    {
+
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=vulns-space;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("data source=DESKTOP-AU0I9CL;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
