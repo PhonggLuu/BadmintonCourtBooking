@@ -69,7 +69,7 @@ namespace BY.Business
             }
         }
 
-        public async Task<IBusinessResult> GetAllBookingDetail()
+        public async Task<BusinessResult> GetAllBookingDetail()
         {
             try
             {
@@ -89,7 +89,7 @@ namespace BY.Business
             }
         }
 
-        public async Task<IBusinessResult> GetBookingDetailById(int bookingDetailId)
+        public async Task<BusinessResult> GetBookingDetailById(int bookingDetailId)
         {
             try
             {
@@ -109,11 +109,12 @@ namespace BY.Business
             }
         }
 
-        public async Task<IBusinessResult> UpdateBookingDetail(BookingDetail BookingDetail)
-        {
+        public async Task<BusinessResult> UpdateBookingDetail(BookingDetail BookingDetail)
 
+        {
             try
             {
+                var result = await _unitOfWork.BookingDetailRepository.UpdateAsync(BookingDetail);
                 _unitOfWork.BookingDetailRepository.PrepareUpdate(BookingDetail);
                 var result = await _unitOfWork.BookingDetailRepository.SaveAsync();
                 if (result > 0)
