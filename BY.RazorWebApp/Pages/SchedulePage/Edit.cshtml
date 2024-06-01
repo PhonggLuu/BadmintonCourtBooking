@@ -1,0 +1,71 @@
+﻿@page "{id:int}"
+@model BY.RazorWebApp.Pages.SchedulePage.EditModel
+@{
+    ViewData["Title"] = "Update Schedule";
+}
+
+@if (string.IsNullOrEmpty(Model.Error) == false)
+{
+    <div class="alert alert-danger">
+        @Model.Error
+    </div>
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Schedule!.ScheduleId" />
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.From" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.From" type="time" class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.From" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.To" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.To" type="time" class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.To" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.CourtId" class="control-label">Court</label>
+                <select asp-for="@Model.Schedule!.CourtId" class="form-control">
+                    <option value="">Select a Court</option>
+                    @if (Model.Courts != null && Model.Courts.Count > 0)
+                    {
+                        foreach (var court in Model.Courts)
+                        {
+                            <option value="@court.CourtId">@court.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="@Model.Schedule!.CourtId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.Price" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.Price" type="number" class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.Date" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.Date" min="@DateTime.Now.Date.ToString("dd/MM/dd")" type="date"
+                    class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-5">
+    <a asp-page="./SchedulePage">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
