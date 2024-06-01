@@ -14,8 +14,6 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         public List<Schedule>? Schedule { get; private set; }
         public async Task OnGetAsync()
         {
-            if (!ModelState.IsValid)
-            {
                 var result = await _scheduleBusiness.GetAllSchedule();
                 if (result != null || result?.Status == 1)
                 {
@@ -25,7 +23,6 @@ namespace BY.RazorWebApp.Pages.SchedulePage
                 {
                     Error = result?.Message;
                 }
-            }
         }
     }
 }

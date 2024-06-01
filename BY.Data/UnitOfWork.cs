@@ -44,6 +44,12 @@ namespace BY.Data
                 return _bookingDetailRepository ??= new Repository.BookingDetailRepository();
             }
         }
-        public CourtRepository courtRepository { get { return _courseRepository ??= new Repository.CourtRepository(); } }
+        public CourtRepository CourtRepository
+        {
+            get
+            {
+                return _courseRepository ??= new Repository.CourtRepository();
+            }
+        }
     }
 }
