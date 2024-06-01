@@ -28,7 +28,7 @@ public partial class Net1704_221_2_BYContext : DbContext
     public virtual DbSet<Schedule> Schedules { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=DESKTOP-12VUSI0\\SQLEXPRESS;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("server=DESKTOP-V5JCDV7\\LOCALHOST;database=NET1704_221_2_BY;uid=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
 
