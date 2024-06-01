@@ -7,11 +7,11 @@ namespace BY.Business
 {
     public interface IBookingDetailBusiness
     {
-        Task<BusinessResult> GetAllBookingDetail();
-        Task<BusinessResult> CreateBookingDetail(BookingDetail BookingDetail);
-        Task<BusinessResult> UpdateBookingDetail(BookingDetail bookingDetail);
-        Task<BusinessResult> DeleteBookingDetail(BookingDetail bookingDetail);
-        Task<BusinessResult> GetBookingDetailById(int bookingDetailId);
+        Task<IBusinessResult> GetAllBookingDetail();
+        Task<IBusinessResult> CreateBookingDetail(BookingDetail BookingDetail);
+        Task<IBusinessResult> UpdateBookingDetail(BookingDetail bookingDetail);
+        Task<IBusinessResult> DeleteBookingDetail(int bookingDetailId);
+        Task<IBusinessResult> GetBookingDetailById(int bookingDetailId);
     }
     public class BookingDetailBusiness : IBookingDetailBusiness
     {
@@ -22,11 +22,12 @@ namespace BY.Business
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<BusinessResult> CreateBookingDetail(BookingDetail bookingDetail)
+        public async Task<IBusinessResult> CreateBookingDetail(BookingDetail bookingDetail)
         {
             try
             {
-                var result = await _unitOfWork.BookingDetailRepository.CreateAsync(bookingDetail);
+                _unitOfWork.BookingDetailRepository.PrepareCreate(bookingDetail);
+                var result = await _unitOfWork.BookingDetailRepository.SaveAsync();
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -42,12 +43,18 @@ namespace BY.Business
             }
         }
 
-        public async Task<BusinessResult> DeleteBookingDetail(BookingDetail bookingDetail)
+        public async Task<IBusinessResult> DeleteBookingDetail(int bookingDetailId)
         {
             try
             {
-                var result = await _unitOfWork.BookingDetailRepository.RemoveAsync(bookingDetail);
-                if (result)
+                var bookingDetail = await _unitOfWork.BookingDetailRepository.GetByIdAsync(bookingDetailId);
+                if( bookingDetail == null)
+                {
+                    return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                }
+                _unitOfWork.BookingDetailRepository.PrepareRemove(bookingDetail);
+                var result = await _unitOfWork.BookingDetailRepository.SaveAsync();
+                if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
                 }
@@ -82,8 +89,6 @@ namespace BY.Business
             }
         }
 
-
-
         public async Task<BusinessResult> GetBookingDetailById(int bookingDetailId)
         {
             try
@@ -105,11 +110,13 @@ namespace BY.Business
         }
 
         public async Task<BusinessResult> UpdateBookingDetail(BookingDetail BookingDetail)
-        {
 
+        {
             try
             {
                 var result = await _unitOfWork.BookingDetailRepository.UpdateAsync(BookingDetail);
+                _unitOfWork.BookingDetailRepository.PrepareUpdate(BookingDetail);
+                var result = await _unitOfWork.BookingDetailRepository.SaveAsync();
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);

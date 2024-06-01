@@ -51,6 +51,15 @@ namespace BY.Data.Base
         #endregion Separating asign entity and save operators
 
 
+        public T? GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public async Task<T?> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
         public List<T> GetAll()
         {
             return _dbSet.ToList();
@@ -59,6 +68,9 @@ namespace BY.Data.Base
         {
             return await _dbSet.ToListAsync();
         }
+
+
+
         public void Create(T entity)
         {
             _dbSet.Add(entity);
@@ -97,16 +109,6 @@ namespace BY.Data.Base
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public T? GetById(int id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public async Task<T?> GetByIdAsync(int id)
-        {
-            return await _dbSet.FindAsync(id);
         }
 
         public T? GetById(string code)
