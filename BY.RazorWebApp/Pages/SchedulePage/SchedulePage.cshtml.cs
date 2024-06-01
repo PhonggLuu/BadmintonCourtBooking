@@ -14,11 +14,11 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         public string? Message { get; set; }
         public string? Error { get; set; }
 
-        public List<Schedule>? Schedules { get; private set; } = default;
+        public List<Schedule>? Schedules { get; private set; } = new List<Schedule>();
         [BindProperty]
         public Schedule Schedule { get; set; } = new Schedule();
         [BindProperty]
-        public List<Court>? Courts { get; set; } = default;
+        public List<Court>? Courts { get; set; } = new List<Court>();
         public async Task OnGetCourtAsync()
         {
             var courtResult = await _courtBusiness.GetAllCourt();
