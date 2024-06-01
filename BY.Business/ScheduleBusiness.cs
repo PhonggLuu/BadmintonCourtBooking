@@ -29,7 +29,8 @@ namespace BY.Business
         {
             try
             {
-                var result = await _unitOfWork.ScheduleRepository.CreateAsync(schedule);
+                _unitOfWork.ScheduleRepository.PrepareCreate(schedule);
+                var result = await _unitOfWork.SaveChangesWithTransactionAsync();
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -109,7 +110,8 @@ namespace BY.Business
         {
             try
             {
-                var result = await _unitOfWork.ScheduleRepository.UpdateAsync(schedule);
+                _unitOfWork.ScheduleRepository.PrepareUpdate(schedule);
+                var result = await _unitOfWork.SaveChangesWithTransactionAsync();
                 if (result > 0)
                 {
                     return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
@@ -119,7 +121,7 @@ namespace BY.Business
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new BusinessResult(Const.ERROR_EXCEPTION, e.ToString());
             }

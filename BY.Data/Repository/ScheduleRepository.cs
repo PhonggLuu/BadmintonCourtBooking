@@ -8,5 +8,6 @@ namespace BY.Data.Repository
         public ScheduleRepository()
         {
         }
+        public ScheduleRepository(Net1704_221_2_BYContext unitOfWorkContext) => _context = unitOfWorkContext;
     }
 }

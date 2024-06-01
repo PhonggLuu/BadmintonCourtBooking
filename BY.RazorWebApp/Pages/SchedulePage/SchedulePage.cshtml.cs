@@ -1,6 +1,7 @@
 using BY.Business;
 using BY.Data.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,11 +15,11 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         public string? Message { get; set; }
         public string? Error { get; set; }
 
-        public List<Schedule>? Schedules { get; private set; } = default;
+        public List<Schedule>? Schedules { get; private set; } = new List<Schedule>();
         [BindProperty]
         public Schedule Schedule { get; set; } = new Schedule();
         [BindProperty]
-        public List<Court>? Courts { get; set; } = default;
+        public List<Court>? Courts { get; set; } = new List<Court>();
         public async Task OnGetCourtAsync()
         {
             var courtResult = await _courtBusiness.GetAllCourt();
@@ -28,7 +29,14 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             }
             else
             {
-                Error = courtResult?.Message;
+                if(courtResult != null && courtResult.Status == -4)
+                {
+                    Error = "The system occur error. Please try it again.";
+                }
+                else
+                {
+                    Error = courtResult?.Message;
+                }
             }
         }
 
@@ -41,7 +49,14 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             }
             else
             {
-                Error = scheduleResult?.Message;
+                if (scheduleResult != null && scheduleResult.Status == -4)
+                {
+                    Error = "The system occur error. Please try it again.";
+                }
+                else
+                {
+                    Error = scheduleResult?.Message;
+                }
             }
         }
         public async Task<IActionResult> OnGetAsync()
