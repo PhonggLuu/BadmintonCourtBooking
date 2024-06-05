@@ -26,10 +26,10 @@ namespace BY.Business
         private readonly UnitOfWork _UnitOfWork;
 
         public CourtBusiness()
-        {
-            //  _DAO = dao;   
+        {  
             _UnitOfWork ??= new UnitOfWork();
         }
+       
 
         public async Task<IBusinessResult> GetAllCourt()
         {

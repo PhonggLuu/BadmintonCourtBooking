@@ -27,6 +27,7 @@
                     <th class="card-title text-center">Image</th>
                     <th class="card-title text-center">Description</th>
                     <th class="card-title text-center">IsInUse</th>
+                    <th class="card-title text-center">Action</th>
                 </tr>
             </thead>
             <tbody class="tblcourtList">
@@ -40,6 +41,17 @@
                             <td>@court.Image</td>
                             <td>@court.Description</td>
                             <td>@court.IsInUse</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@court.CourtId" class="d-inline">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <form method="post" asp-page-handler="Edit" asp-route-id="@court.CourtId" class="d-inline">
+                                        <input type="hidden" id="editedCourtId" name="editedCourtId" />
+                                        <button type="button" class="btn btn-warning" onclick="editCourt(@court.CourtId)">Update</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     }
                 }
@@ -96,11 +108,63 @@
     </div>
 </div>
 
-@section scripts 
-{
+
+<div class="modal fade" id="courtModalEdit" tabindex="-1" aria-labelledby="courtModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frmEdit", id = "frmEdit" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="courtModalLabel">Edit Court</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" asp-for="Court.CourtId" class="form-control" id="CourtId" />
+
+                    <div class="form-group">
+                        <label for="CourtName">Name</label>
+                        <input asp-for="Court.Name" class="form-control" id="CourtName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="CourtImage">Image</label>
+                        <input asp-for="Court.Image" class="form-control" id="CourtImage" />
+                    </div>
+                    <div class="form-group">
+                        <label for="CourtDescription">Description</label>
+                        <input asp-for="Court.Description" class="form-control" id="CourtDescription" />
+                    </div>
+                    <div class="form-group">
+                        <label>@Model.Message</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btSaveEdit" type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
     <script type="text/javascript">
         function add() {
-            $('#courtModal').modal('show');                       
+            $('#courtModal').modal('show');
+        }
+        function editCourt(id) {
+            console.log(id)
+            $('#courtModalEdit').modal('show');
+            fetch(`?handler=Edit&id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('CourtId').value = id;
+                    document.getElementById('frmEdit').action = '?handler=Edit';
+                    document.getElementById('CourtName').value = data.name;
+                    document.getElementById('CourtImage').value = data.image;
+                    document.getElementById('CourtDescription').value = data.description;
+                });
         }
     </script>
 }
