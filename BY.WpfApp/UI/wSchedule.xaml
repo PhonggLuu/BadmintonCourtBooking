@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:BY.WpfApp.UI"
         mc:Ignorable="d"
         Title="Schedule" Height="450" Width="1000">
     <Grid>
@@ -15,32 +14,37 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="121"/>
-                        <ColumnDefinition Width="36"/>
+
+                        <ColumnDefinition Width="69"/>
+                        <ColumnDefinition Width="51"/>
+                        <ColumnDefinition Width="44"/>
+                        <ColumnDefinition Width="132"/>
+                        <ColumnDefinition Width="31"/>
                         <ColumnDefinition Width="113"/>
-                        <ColumnDefinition Width="46"/>
-                        <ColumnDefinition Width="107"/>
+                        <ColumnDefinition Width="23"/>
+                        <ColumnDefinition Width="118"/>
+                        <ColumnDefinition Width="33"/>
+                        <ColumnDefinition Width="106"/>
                         <ColumnDefinition Width="37"/>
-                        <ColumnDefinition Width="119"/>
-                        <ColumnDefinition Width="59"/>
+                        <ColumnDefinition Width="126"/>
+                        <ColumnDefinition Width="53"/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="0*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="7" Visibility="Visible" x:Name="txtScheduleId"  Text="{Binding Path=Schedule.ScheduleId, Mode=TwoWay}"  Margin="0,15,0,10"  Width="101" HorizontalAlignment="Center"/>
-                    <Label Grid.Row="0" Content="Court" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="40" />
-                    <ComboBox x:Name="txtCourt" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Grid.Column="1" Height="22"/>
-                    <Label Grid.Column="2" Grid.Row="0" Content="From" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" RenderTransformOrigin="0.848,0.538" />
-                    <xctk:TimePicker Grid.Column="3" Grid.Row="0" x:Name="txtFrom" Text="{Binding Path= Schedule.From, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="4" Grid.Row="0" Content="To" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="30" />
-                    <xctk:TimePicker Grid.Column="5" Grid.Row="0" x:Name="txtTo" Text="{Binding Path=Schedule.To, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="6" Grid.Row="0" Content="Price" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" />
-                    <TextBox Grid.Column="7" x:Name="txtPrice"  Text="{Binding Path=Schedule.Price, Mode=TwoWay}"  Margin="0,15,0,10"  Width="101" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="8" Grid.Row="0" Content="Date" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" />
-                    <DatePicker Grid.Column="9" Grid.Row="0" x:Name="txtDate" Text="{Binding Path=Schedule.Date, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
-                    <Label Grid.Column="10" Grid.Row="0" Content="IsBooked" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="60" />
-                    <CheckBox Grid.Column="11" Grid.Row="0" x:Name="txtIsBooked" IsChecked="{Binding ElementName=IsBooked, Path=IsBooked}"  Margin="10,18,0,17"  Width="19" HorizontalAlignment="Left" RenderTransformOrigin="0.74,0.921"/>
+                    <Label Grid.Row="0" Content="Court" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="40" Grid.Column="2" />
+                    <ComboBox x:Name="txtCourt" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Grid.Column="3" Height="22"/>
+                    <Label Grid.Column="4" Grid.Row="0" Content="From" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" RenderTransformOrigin="0.848,0.538" />
+                    <xctk:TimePicker Grid.Column="5" Grid.Row="0" x:Name="txtFrom" Text="{Binding Path= Schedule.From, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
+                    <Label Grid.Column="6" Grid.Row="0" Content="To" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="30" />
+                    <xctk:TimePicker Grid.Column="7" Grid.Row="0" x:Name="txtTo" Text="{Binding Path=Schedule.To, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
+                    <Label Grid.Column="8" Grid.Row="0" Content="Price" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" />
+                    <TextBox Grid.Column="9" x:Name="txtPrice"  Text="{Binding Path=Schedule.Price, Mode=TwoWay}"  Margin="0,15,0,10"  Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <Label Grid.Column="10" Grid.Row="0" Content="Date" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="42" />
+                    <DatePicker Grid.Column="11" Grid.Row="0" x:Name="txtDate" Text="{Binding Path=Schedule.Date, Mode=TwoWay}"  Margin="0,13,0,12"  Width="108" HorizontalAlignment="Center"/>
+                    <Label Grid.Column="12" Grid.Row="0" Content="IsBooked" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="60" />
+                    <CheckBox Grid.Column="13" Grid.Row="0" x:Name="txtIsBooked" IsChecked="{Binding ElementName=IsBooked, Path=IsBooked}"  Margin="0,18,0,17"  Width="20" HorizontalAlignment="Center" RenderTransformOrigin="0.74,0.921"/>
+                    <Label Content="ScheduleId" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="76"/>
+                    <TextBox Grid.Column="1" x:Name="txtScheduleId" IsEnabled="False" Text="{Binding Path=Schedule.ScheduleId, Mode=TwoWay}"  Margin="10,0,0,0"  Width="42" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center" Height="17" Grid.ColumnSpan="2"/>
                 </Grid>
             </GroupBox>
             <StackPanel Height="40" Orientation="Horizontal" HorizontalAlignment="Right">

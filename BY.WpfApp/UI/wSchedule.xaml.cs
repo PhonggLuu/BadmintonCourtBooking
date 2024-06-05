@@ -108,7 +108,8 @@ namespace BY.WpfApp.UI
             }
             if (!int.TryParse(txtScheduleId.Text, out int scheduleId))
             {
-                Schedule schedule = new Schedule() { 
+                Schedule schedule = new Schedule()
+                {
                     CourtId = selectedCourt.CourtId,
                     From = startTime,
                     To = endTime,
@@ -130,26 +131,32 @@ namespace BY.WpfApp.UI
             }
             else
             {
-                Schedule schedule = new Schedule()
+                var scheduleResult = await _scheduleBusiness.GetScheduleById(scheduleId);
+                if (scheduleResult != null && scheduleResult.Status > 0 && scheduleResult.Data != null)
                 {
-                    ScheduleId = scheduleId,
-                    CourtId = selectedCourt.CourtId,
-                    From = startTime,
-                    To = endTime,
-                    Price = money,
-                    Date = startDate.Date,
-                    IsBooked = txtIsBooked.IsChecked
-                };
-                var result = await _scheduleBusiness.UpdateSchedule(schedule);
-                if (result != null && result.Status > 0)
-                {
-                    SetValueDefault();
-                    LoadGrdSchedule();
-                    MessageBox.Show(result?.Message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Update fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var schedule = scheduleResult.Data as Schedule;
+                    if (schedule != null)
+                    {
+                        schedule.ScheduleId = scheduleId;
+                        schedule.CourtId = schedule.CourtId;
+                        schedule.From = startTime;
+                        schedule.To = endTime;
+                        schedule.Price = money;
+                        schedule.Date = startDate.Date;
+                        schedule.IsBooked = txtIsBooked.IsChecked;
+
+                        var result = await _scheduleBusiness.UpdateSchedule(schedule);
+                        if (result != null && result.Status > 0)
+                        {
+                            SetValueDefault();
+                            LoadGrdSchedule();
+                            MessageBox.Show(result?.Message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Update fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
                 }
             }
         }
@@ -157,7 +164,8 @@ namespace BY.WpfApp.UI
         {
             SetValueDefault();
         }
-        private void SetValueDefault() {
+        private void SetValueDefault()
+        {
             txtScheduleId.Text = "";
             txtCourt.SelectedItem = null;
             txtFrom.Text = "";
