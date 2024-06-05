@@ -1,6 +1,7 @@
 using BY.Business;
 using BY.Data.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -28,7 +29,14 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             }
             else
             {
-                Error = courtResult?.Message;
+                if(courtResult != null && courtResult.Status == -4)
+                {
+                    Error = "The system occur error. Please try it again.";
+                }
+                else
+                {
+                    Error = courtResult?.Message;
+                }
             }
         }
 
@@ -41,7 +49,14 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             }
             else
             {
-                Error = scheduleResult?.Message;
+                if (scheduleResult != null && scheduleResult.Status == -4)
+                {
+                    Error = "The system occur error. Please try it again.";
+                }
+                else
+                {
+                    Error = scheduleResult?.Message;
+                }
             }
         }
         public async Task<IActionResult> OnGetAsync()

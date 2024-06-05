@@ -8,9 +8,11 @@ namespace BY.Data.Base
         protected Net1704_221_2_BYContext _context;
         protected readonly DbSet<T> _dbSet;
 
+
         public GenericRepository()
         {
             _context ??= new Net1704_221_2_BYContext();
+
           //  _dbSet = _context.Set<T>();
         }
 
@@ -23,10 +25,14 @@ namespace BY.Data.Base
         }
         #region Separating asign entity and save operators
 
+
+        }
         public GenericRepository(Net1704_221_2_BYContext context)
         {
             _context = context;
         }
+
+        #region Separating asign entity and save operators
 
         public void PrepareCreate(T entity)
         {
@@ -56,6 +62,12 @@ namespace BY.Data.Base
 
         #endregion Separating asign entity and save operators
 
+        public async Task<T?> GetByIdAsync(Guid code)
+        {
+            return await _context.Set<T>().FindAsync(code);
+        }
+        #region Separating asign entity and save operators
+
 
         public List<T> GetAll()
         {
@@ -63,7 +75,8 @@ namespace BY.Data.Base
         }
         public async Task<List<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
         public void Create(T entity)
         {
@@ -73,7 +86,8 @@ namespace BY.Data.Base
 
         public async Task<int> CreateAsync(T entity)
         {
-            _context.AddAsync(entity);
+            await _context.AddAsync(entity);
+
             return await _context.SaveChangesAsync();
         }
 
@@ -106,30 +120,32 @@ namespace BY.Data.Base
             return true;
         }
 
-        public T GetById(int id)
+
+        public T? GetById(int id)
+
         {
             return _context.Set<T>().Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+
+        public async Task<T?> GetByIdAsync(int id)
+
         {
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public T GetById(string code)
+        public T? GetById(string code)
         {
             return _context.Set<T>().Find(code);
         }
 
-        public async Task<T> GetByIdAsync(string code)
+
+        public async Task<T?> GetByIdAsync(string code)
         {
             return await _context.Set<T>().FindAsync(code);
         }
-        public T GetById(Guid code)
-        {
-            return _context.Set<T>().Find(code);
-        }
-        #endregion
+
+        #endregion Separating asign entity and save operators
     }
 
 }

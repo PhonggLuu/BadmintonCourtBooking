@@ -14,18 +14,19 @@ namespace BY.Data
     
         public UnitOfWork()
         {
+
             _unitOfWorkContext ??= new Net1704_221_2_BYContext();
         }
-        public UnitOfWork(Net1704_221_2_BYContext net1704_221_2_BYContext)
+        public UnitOfWork(Net1704_221_2_BYContext unitOfWorkContext)
         {
-            _unitOfWorkContext = net1704_221_2_BYContext;
+            _unitOfWorkContext = unitOfWorkContext;
         }
         public CourtRepository courtRepository { get { return _courseRepository ??= new Repository.CourtRepository(); } }
         public ScheduleRepository ScheduleRepository
         {
             get
             {
-                return _scheduleRepository ??= new Repository.ScheduleRepository();
+                return _scheduleRepository ??= new Repository.ScheduleRepository(_unitOfWorkContext);
             }
         }
         public BookingRepository BookingRepositoty
@@ -56,6 +57,7 @@ namespace BY.Data
                 return _courseRepository ??= new Repository.CourtRepository();
             }
         }
+
         ////TO-DO CODE HERE/////////////////
 
         #region Set transaction isolation levels

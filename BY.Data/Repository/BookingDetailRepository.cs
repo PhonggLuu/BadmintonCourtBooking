@@ -12,7 +12,7 @@ namespace BY.Data.Repository
 
         public async Task<List<BookingDetail>> GetAllAsync()
         {
-            return await _dbSet.Include(bd => bd.Booking).Include(bd => bd.Schedule).ToListAsync();
+            return await _context.Set<BookingDetail>().Include(bd => bd.Booking).Include(bd => bd.Schedule).ToListAsync();
         }
     }
 }

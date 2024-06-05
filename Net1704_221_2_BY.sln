@@ -11,7 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BY.RazorWebApp", "BY.RazorW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BY.Common", "BY.Common\BY.Common.csproj", "{D2837AFA-CC04-475B-A8A6-58220DEFA3A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BY.WpfApp", "BY.WpfApp\BY.WpfApp.csproj", "{651C33B2-C38E-444C-9C35-E51BDC58B0F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BY.WpfApp", "BY.WpfApp\BY.WpfApp.csproj", "{62FE2044-25F1-4B26-86A6-FEB6571E3B7B}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +36,15 @@ Global
 		{D2837AFA-CC04-475B-A8A6-58220DEFA3A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2837AFA-CC04-475B-A8A6-58220DEFA3A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2837AFA-CC04-475B-A8A6-58220DEFA3A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{651C33B2-C38E-444C-9C35-E51BDC58B0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+    {651C33B2-C38E-444C-9C35-E51BDC58B0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{651C33B2-C38E-444C-9C35-E51BDC58B0F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{651C33B2-C38E-444C-9C35-E51BDC58B0F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{651C33B2-C38E-444C-9C35-E51BDC58B0F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62FE2044-25F1-4B26-86A6-FEB6571E3B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62FE2044-25F1-4B26-86A6-FEB6571E3B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62FE2044-25F1-4B26-86A6-FEB6571E3B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62FE2044-25F1-4B26-86A6-FEB6571E3B7B}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
