@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BY.Data.Models;
 
@@ -26,9 +27,21 @@ public partial class Net1704_221_2_BYContext : DbContext
     {
 
     }
+    public static string GetConnectionString(string connectionStringName)
+    {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        string connectionString = config.GetConnectionString(connectionStringName);
+        return connectionString;
+    }
+    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));*/
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("data source=DESKTOP-12VUSI0\\SQLEXPRESS;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("data source=DESKTOP-V5JCDV7\\LOCALHOST;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
         base.OnConfiguring(optionsBuilder);
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

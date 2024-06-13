@@ -26,6 +26,7 @@
                     <th class="card-title text-center">Email</th>
                     <th class="card-title text-center">Address</th>
                     <th class="card-title text-center">Phone</th>
+                    <th class="card-title text-center">Action</th>
                 </tr>
             </thead>
             <tbody class="tblcurrencyList">
@@ -38,6 +39,14 @@
                             <td>@customer.Email</td>
                             <td>@customer.Address</td>
                             <td>@customer.Phone</td>
+                            <td>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@customer.CustomerId">
+                                    <button class="btn btn-primary" type="submit">Delete</button>
+                                </form>
+                                @* <form method="post" asp-page-handler="Delete" asp-route-id="@customer.CustomerId">
+                                    <button type="button" class="btn btn-danger" type="submit">Delete</button>
+                                </form> *@
+                            </td>
                         </tr>
                     }
                 }
