@@ -56,7 +56,11 @@ namespace BY.WpfApp.UI
                         Email = txtEmail.Text,
                         Address = txtAddress.Text,
                         Phone = txtPhone.Text,
-                        NumberSlot = 0
+                        NumberSlot = int.Parse(txtNumberSlot.Text),
+                        YearOfBirth = new DateOnly(YearOfBirth.SelectedDate.Value.Year, YearOfBirth.SelectedDate.Value.Month, YearOfBirth.SelectedDate.Value.Day),
+                        RegisterDate = RegisterDate.Value,
+                        Gender = Gender.IsChecked.Value,
+                        IsActive = IsActive.IsChecked.Value
                     };
                     var result = await _business.Save(customer);
                     MessageBox.Show(result.Message, "Save");
@@ -71,6 +75,11 @@ namespace BY.WpfApp.UI
                         customer.Email = txtEmail.Text;
                         customer.Address = txtAddress.Text;
                         customer.Phone = txtPhone.Text;
+                        customer.NumberSlot = int.Parse(txtNumberSlot.Text);
+                        customer.YearOfBirth = new DateOnly(YearOfBirth.SelectedDate.Value.Year, YearOfBirth.SelectedDate.Value.Month, YearOfBirth.SelectedDate.Value.Day);
+                        customer.RegisterDate = RegisterDate.Value;
+                        customer.Gender = Gender.IsChecked.Value;
+                        customer.IsActive = IsActive.IsChecked.Value;
 
                         var result = await _business.Update(customer);
                         MessageBox.Show(result?.Message, "Success Update!", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -116,6 +125,16 @@ namespace BY.WpfApp.UI
                             txtEmail.Text = item.Email;
                             txtAddress.Text = item.Address;
                             txtPhone.Text = item.Phone;
+                            txtNumberSlot.Text = item.NumberSlot.ToString();
+                            if (item.YearOfBirth.HasValue)
+                            {
+                                DateOnly dateOnly = item.YearOfBirth.Value;
+                                DateTime dateTime = new DateTime(dateOnly.Year, dateOnly.Month, dateOnly.Day);
+                                YearOfBirth.SelectedDate = dateTime;
+                            }
+                            RegisterDate.Value = item.RegisterDate;
+                            Gender.IsChecked = item.Gender;
+                            IsActive.IsChecked = item.IsActive;
                         }
                     }
                 }

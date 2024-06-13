@@ -6,7 +6,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-6">Currency management</h1>
+    <h1 class="display-6">Customer management</h1>
 </div>
 
 <div class="row">
@@ -26,6 +26,11 @@
                     <th class="card-title text-center">Email</th>
                     <th class="card-title text-center">Address</th>
                     <th class="card-title text-center">Phone</th>
+                    <th class="card-title text-center">NumberSlot</th>
+                    <th class="card-title text-center">Gender</th>
+                    <th class="card-title text-center">YearOfBirth</th>
+                    <th class="card-title text-center">RegisterDate</th>
+                    <th class="card-title text-center">IsActive</th>
                     <th class="card-title text-center">Action</th>
                 </tr>
             </thead>
@@ -39,6 +44,11 @@
                             <td>@customer.Email</td>
                             <td>@customer.Address</td>
                             <td>@customer.Phone</td>
+                            <td>@customer.NumberSlot</td>
+                            <td>@customer.Gender</td>
+                            <td>@customer.YearOfBirth</td>
+                            <td>@customer.RegisterDate</td>
+                            <td>@customer.IsActive</td>
                             <td>
                                 <form method="post" asp-page-handler="Delete" asp-route-id="@customer.CustomerId">
                                     <button class="btn btn-primary" type="submit">Delete</button>
@@ -89,6 +99,42 @@
                                 <div class="col-md-6">
                                     <label for="1">Phone Number</label>
                                     <input asp-for="Customer.Phone" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="1">Year Of Birth</label>
+                                    <input type="date" asp-for="Customer.YearOfBirth" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="1">Register Date</label>
+                                    <input type="datetime" asp-for="Customer.RegisterDate" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="1">Number Slot</label>
+                                    <input type="number" min="0" asp-for="Customer.NumberSlot" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" asp-for="Customer.Gender" id="Gender">
+                                        <label class="form-check-label" for="Gender">
+                                            Gender
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" asp-for="Customer.IsActive" id="IsActive">
+                                        <label class="form-check-label" for="IsActive">
+                                            IsActive
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
