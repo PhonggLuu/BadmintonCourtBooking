@@ -1,0 +1,82 @@
+﻿@page
+@model MyApp.Namespace.PaymentModel
+@{
+    ViewData["Title"] = "Payment";
+}
+@if (string.IsNullOrEmpty(Model.Error) == false)
+{
+    <div class="alert alert-danger">
+        @Model.Error
+    </div>
+}
+<div class="container my-5">
+    @if (@Model.Success)
+    {
+        <div class="row min-vh-100">
+            <div class="d-flex justify-content-center" style="align-items: center;">
+                <div class="text-center">
+                    <img style="height: 200px; width: 200px;" src="~/image/success.webp" />
+                    <h1 class="mb-4">Success !</h1>
+                    <p>Your operation was completed successfully.</p>
+                    <a href="/">
+                        <button class="btn btn-dark rounded-3">Back to home</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-7 mb-4">
+                <h4 class="text-center mb-5">Booking</h4>
+                <div class="shadow-lg border-5 p-4 mt-3 position-relative"
+                    style="transition: transform 0.3s, box-shadow 0.3s;">
+                    <div class="d-flex justify-content-between" style="align-items: center;">
+                        <img src="~/image/court.png" alt="Court Image" style="height: 200px; width: 220px;" class="me-4">
+                        <div class="court-info flex-grow-1">
+                            <h3>Sân Thiên An</h3>
+                            <p>Start Date: <strong>2024-06-15</strong></p>
+                            <p>Start Hour: <strong>10:00 AM</strong></p>
+                            <p>Number Hour: <strong>2</strong></p>
+                            <p>Price: <strong>30k / h</strong></p>
+                        </div>
+                        <div class="text-center">
+                            <p>Total Price</p>
+                            <span><strong>50k</strong></span>
+                        </div>
+                    </div>
+                    <span class="position-absolute top-0 p-2" style="right: 0; cursor: pointer;">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <h4 class="text-center">Customer</h4>
+                <form class="mt-5">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="inputName">Name</label>
+                            <input id="inputName" type="text" class="form-control" name="name">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="inputEmail">Email</label>
+                            <input id="inputEmail" name="email" type="email" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="inputAddress">Address</label>
+                            <input id="inputAddress" type="text" class="form-control" name="address">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="inputPhone">Phone</label>
+                            <input id="inputPhone" type="txt" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-5 w-50 mx-auto">Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>

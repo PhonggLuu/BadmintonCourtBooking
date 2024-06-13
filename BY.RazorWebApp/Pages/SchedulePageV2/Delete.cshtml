@@ -1,0 +1,64 @@
+﻿@page
+@model BY.RazorWebApp.Pages.SchedulePageV2.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Schedule</h4>
+    <hr />
+    @if (string.IsNullOrEmpty(Model.Error) == false)
+    {
+        <div class="alert alert-danger">
+            @Model.Error
+        </div>
+    }
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.From)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.From)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.To)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.To)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.IsBooked)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.IsBooked)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.Court)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.Court.CourtId)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Schedule.ScheduleId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

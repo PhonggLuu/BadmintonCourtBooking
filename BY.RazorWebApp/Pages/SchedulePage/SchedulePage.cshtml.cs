@@ -78,6 +78,18 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             {
                 return Page();
             }
+            if (Schedule.From > Schedule.To)
+            {
+                Error = "Time From not great than or equal time To";
+                await OnGetAsync();
+                return Page();
+            }
+            if (Schedule.Date < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
+            {
+                Error = "Date not less than today";
+                await OnGetAsync();
+                return Page();
+            }
             var resultCreate = await _scheduleBusiness.CreateSchedule(Schedule);
             if (resultCreate != null && resultCreate?.Status == 1)
             {

@@ -15,7 +15,7 @@
     @Model.Error
   </div>
 }
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 <div class="row">
   <div class="col-md-12 text-end">
     <button type="button" class="btn btn-primary" onclick="add();">
@@ -125,7 +125,7 @@
           <div class="col12">
             <div class="form-group">
               <label asp-for="Schedule.Date" class="control-label"></label>
-              <input asp-for="Schedule.Date" min="@DateTime.Now.Date.ToString("dd/MM/dd")" type="date"
+              <input asp-for="Schedule.Date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date"
                 class="form-control" />
               <span asp-validation-for="Schedule.Date" class="text-danger"></span>
             </div>

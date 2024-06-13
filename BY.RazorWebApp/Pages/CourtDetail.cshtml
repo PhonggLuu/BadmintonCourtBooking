@@ -1,0 +1,58 @@
+﻿@page
+@model MyApp.Namespace.CourtDetailModel
+@{
+     ViewData["Title"] = "Court detail page";
+}
+<div class="container-fluid py-5">
+     <div class="shadow-lg rounded-3 shadow-lg py-3">
+          <div class="row p-5">
+               <div class="col-sm-12 col-lg-6 mb-4">
+                    <img class="w-100 h-100" src="~/image/court.png" alt="" />
+               </div>
+               <div class="col-sm-12 col-lg-6">
+                    <div class="d-flex flex-column gap-3 px-5">
+                         <h3 class="text-center">Thiên hà sân</h3>
+                         <h5 class="mt-5">Description:</h5>
+                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum dolore ducimus quaerat
+                              sequi voluptas, in architecto sint provident illum,
+                              iste facilis et libero porro asperiores nisi assumenda unde magni eaque?</p>
+                         <div class="d-flex align-items-center">
+                              <h5 class="mb-0">Price: </h5>
+                              <span class="mx-2">60k / h</span>
+                         </div>
+                         <div class="d-flex align-items-center">
+                              <h5 class="mb-0">Date play: </h5>
+                              <div class="form-group mx-2">
+                                   <label class="control-label sr-only">Date play</label>
+                                   <input min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date"
+                                        class="form-control" />
+                              </div>
+                         </div>
+                         <div class="d-flex align-items-center">
+                              <h5 class="mb-0">Start hour: </h5>
+                              <div class="form-group mx-2 w-25">
+                                   <label class="control-label sr-only">Start hour</label>
+                                   <select type="time" class="form-control w-100">
+                                        <option value="">Chose hour</option>
+                                        <option value="">8:00</option>
+                                        <option value="">9:00</option>
+                                        <option value="">10:00</option>
+                                   </select>
+                              </div>
+                         </div>
+                         <div class="d-flex align-items-center">
+                              <h5 class="mb-0">Number hour: </h5>
+                              <div class="form-group mx-2">
+                                   <label class="control-label sr-only">Number hour</label>
+                                   <input min="1" type="number" value="1" class="form-control" />
+                              </div>
+                         </div>
+                         <a href="/Payment" class="mx-auto mt-4 w-75">
+                              <button class="btn btn-primary w-100">Booking</button>
+                         </a>
+                    </div>
+               </div>
+
+          </div>
+     </div>
+</div>
