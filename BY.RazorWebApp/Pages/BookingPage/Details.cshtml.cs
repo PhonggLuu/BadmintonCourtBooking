@@ -23,7 +23,7 @@ namespace BY.RazorWebApp.Pages.BookingPage
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            var result = await _business.GetBookingById(id);
+            var result = await _business.GetBookingById(id.Value);
 
             if (result == null || result.Status < 0 || result.Data == null)
             {
