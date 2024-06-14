@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BY.Data.Models;
 
-public partial class Schedule
+public partial class Booking
 {
     public int ScheduleId { get; set; }
 
