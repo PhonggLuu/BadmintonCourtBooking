@@ -12,6 +12,12 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.CourtId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.CourtId)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Schedule.From)
         </dt>
         <dd class="col-sm-10">
@@ -36,16 +42,28 @@
             @Html.DisplayFor(model => model.Schedule.Date)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.Notes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.Notes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.StaffCheck)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.StaffCheck)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule.Event)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Schedule.Event)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Schedule.IsBooked)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Schedule.IsBooked)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Schedule.Court)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Schedule.Court.CourtId)
         </dd>
     </dl>
 </div>

@@ -53,6 +53,29 @@
                     class="form-control" />
                 <span asp-validation-for="@Model.Schedule!.Date" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.Notes" class="control-label"></label>
+                <textarea asp-for="@Model.Schedule!.Notes" class="form-control"></textarea>
+                <span asp-validation-for="@Model.Schedule!.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.StaffCheck" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.StaffCheck" type="text" class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.StaffCheck" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.Event" class="control-label"></label>
+                <input asp-for="@Model.Schedule!.Event" type="text" class="form-control" />
+                <span asp-validation-for="@Model.Schedule!.Event" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Schedule!.IsBooked" class="control-label"></label>
+                <select asp-for="@Model.Schedule!.IsBooked" class="form-control">
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                </select>
+                <span asp-validation-for="@Model.Schedule!.IsBooked" class="text-danger"></span>
+            </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

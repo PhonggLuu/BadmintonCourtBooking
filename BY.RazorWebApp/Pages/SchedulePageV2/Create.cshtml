@@ -20,7 +20,7 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Schedule.CourtId" class="control-label"></label>
+                <label asp-for="Schedule.CourtId" class="control-label">Court Name</label>
                 <select asp-for="Schedule.CourtId" class ="form-control" asp-items="ViewBag.CourtId"></select>
             </div>
             <div class="form-group">
@@ -43,6 +43,21 @@
                 <input asp-for="Schedule.Date" type="date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="Schedule.Date" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Schedule.Event" class="control-label"></label>
+                <input asp-for="Schedule.Event" type="text" class="form-control" />
+                <span asp-validation-for="Schedule.Event" class="text-danger"></span>
+              </div>
+              <div class="form-group">
+              <label asp-for="Schedule.Notes" class="control-label"></label>
+              <textarea asp-for="Schedule.Notes" class="form-control"></textarea>
+              <span asp-validation-for="Schedule.Date" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Schedule.StaffCheck" class="control-label"></label>
+                <input asp-for="Schedule.StaffCheck" type="text" class="form-control" />
+                <span asp-validation-for="Schedule.StaffCheck" class="text-danger"></span>
+              </div>
             <div class="form-group">
                 <label asp-for="Schedule.IsBooked" class="control-label"></label>
                 <select asp-for="Schedule.IsBooked" class="form-control">
