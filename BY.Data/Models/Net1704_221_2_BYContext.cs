@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BY.Data.Models;
 
@@ -26,11 +27,18 @@ public partial class Net1704_221_2_BYContext : DbContext
     {
 
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public static string GetConnectionString(string connectionStringName)
     {
-        optionsBuilder.UseSqlServer("data source=DESKTOP-12VUSI0\\SQLEXPRESS;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
-        base.OnConfiguring(optionsBuilder);
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        string connectionString = config.GetConnectionString(connectionStringName);
+        return connectionString;
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
@@ -74,7 +82,17 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.ToTable("Court");
 
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
+            entity.Property(e => e.Address).HasMaxLength(200);
+            entity.Property(e => e.Color)
+                .HasMaxLength(50)
+                .IsFixedLength();
             entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.SurfaceType)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -104,10 +122,6 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-
-            entity.HasOne(d => d.Court).WithMany(p => p.Schedules)
-                .HasForeignKey(d => d.CourtId)
-                .HasConstraintName("FK_Schedule_Court");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BY.Data.Models;
 
@@ -10,24 +9,17 @@ public partial class Schedule
 {
     public int ScheduleId { get; set; }
 
-    [Required(ErrorMessage = "The Court field is required")]
     public int? CourtId { get; set; }
 
-    [Required]
     public TimeOnly? From { get; set; }
 
-    [Required]
     public TimeOnly? To { get; set; }
 
-    [Required]
     public decimal? Price { get; set; }
 
-    [Required]
     public DateTime? Date { get; set; }
 
-    [Required]
-    public bool? IsBooked { get; set; } = false;
-    public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
+    public bool? IsBooked { get; set; }
 
-    public virtual Court Court { get; set; }
+    public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 }

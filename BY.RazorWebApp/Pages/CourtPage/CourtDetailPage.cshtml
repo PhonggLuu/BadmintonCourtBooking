@@ -1,0 +1,80 @@
+﻿@page "{id:int}"
+@model BY.RazorWebApp.Pages.CourtPage.CourtDetailPageModel
+@{
+    ViewData["Title"] = "Court Detail";
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+</head>
+<body>
+    <section class="w-100 h-150 px-4 py-5" style="background-color: #9de2ff; border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+            <div class="col col-md-12 col-lg-10 col-xl-8">
+                <!-- Adjusted the column width -->
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <!-- Increased padding -->
+                        <div class="d-flex">
+                            <div class="align-self-center">
+                                <img src="@Model.Court.Image"
+                                     alt="Generic placeholder image" class="img-fluid " style="width: 300px; border-radius: 10px;"> <!-- Increased image width -->
+                            </div>
+                            <div class="flex-grow-1 ms-4 border border-info" style="border-radius: 10px;">
+
+                             <div class="p-2">
+                                    <!-- Increased margin -->
+                                    <h5 class="mb-4" style="font-size: 1.5rem;">@Model.Court.Name</h5> <!-- Increased font size -->
+                                    <p class="mb-3 pb-2" style="font-size: 1.2rem;">@Model.Court.Description</p> <!-- Increased font size -->
+                                    <div>
+                                        @if (@Model.Court.IsInUse != true)
+                                        {
+                                            <p class="mb-3 pb-2" style="color:red; font-size: 1.2rem;">Courts available</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="mb-3 pb-2" style="color:forestgreen; font-size: 1.2rem;">Out Of</p>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1 ms-4">
+
+                                        <div class="d-flex justify-content-start rounded-3 p-3 mb-3 bg-body-tertiary">
+                                            <!-- Increased padding and margin -->
+                                            <div>
+                                                <p class="small text-muted mb-2">Color</p>
+                                                <p class="mb-0" style="font-size: 1.2rem;">@Model.Court.Color</p> <!-- Increased font size -->
+                                            </div>
+                                            <div class="px-4">
+                                                <!-- Increased padding -->
+                                                <p class="small text-muted mb-2">Surface Type</p>
+                                                <p class="mb-0" style="font-size: 1.2rem;">@Model.Court.SurfaceType</p> <!-- Increased font size -->
+                                            </div>
+                                            <div>
+                                                <p class="small text-muted mb-2">Type</p>
+                                                <p class="mb-0" style="font-size: 1.2rem;">@Model.Court.Type</p> <!-- Increased font size -->
+                                            </div>
+                                        </div>
+                                        <p class="mb-3 pb-2" style="font-size: 1.2rem;">Addres: @Model.Court.Address</p> <!-- Increased font size -->
+                                        <div class="d-flex pt-2">
+                                            <button type="button" class="btn btn-outline-primary me-2 flex-grow-1">Book</button>
+                                            <!--  <button type="button" class="btn btn-primary flex-grow-1">Edit</button>-->
+                                        </div>
+
+
+                                    </div>
+                             </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

@@ -21,6 +21,12 @@ namespace BY.WpfApp
         {
             InitializeComponent();
         }
+        private async void Open_wCourt_Click(object sender, RoutedEventArgs e)
+        {
+            var p = new wCourt();
+            p.Owner = this;
+            p.Show();
+        }
         private async void Open_wSchedule_Click(object sender, RoutedEventArgs e)
         {
             var p = new wSchedule();
