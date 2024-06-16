@@ -10,10 +10,10 @@
         <Menu Height="30" Name="menu1" Margin="0,0,0,0" VerticalAlignment="Top" BorderThickness="2" FontSize="16" FontWeight="Bold">
             <MenuItem Header="Menu" IsCheckable="False" FontSize="16">
                 <MenuItem Header="Schedule" IsCheckable="False" FontSize="12" Click="Open_wSchedule_Click">
-
                 </MenuItem>
                 <MenuItem Header="Customer" IsCheckable="False" FontSize="12" Click="Open_wCustomer_Click">
-
+                </MenuItem>
+                <MenuItem Header="Court" IsCheckable="False" FontSize="12" Click="Open_wCourt_Click">
                 </MenuItem>
             </MenuItem>
 

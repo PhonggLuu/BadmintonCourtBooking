@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace BY.Data.Models;
 
@@ -94,6 +95,12 @@ public partial class Net1704_221_2_BYContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.SurfaceType)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .IsFixedLength();
             entity.Property(e => e.SurfaceType)
                 .HasMaxLength(200)
                 .IsFixedLength();

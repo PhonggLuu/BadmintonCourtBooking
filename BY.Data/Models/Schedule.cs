@@ -28,6 +28,4 @@ public partial class Schedule
     public bool? IsBooked { get; set; }
 
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
-
-    public virtual Court Court { get; set; }
 }

@@ -66,7 +66,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             {
                 if (scheduleResult != null && scheduleResult.Status == -4)
                 {
-                    Error = "The system occur error. Please try it again.";
+                    Error = scheduleResult?.Message;
                 }
                 else
                 {
