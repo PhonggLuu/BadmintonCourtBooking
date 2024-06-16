@@ -1,11 +1,9 @@
 ﻿using BY.Business.Base;
 using BY.Common;
 using BY.Data;
-using BY.Data.Currency;
 using BY.Data.Models;
-using System.Net.WebSockets;
 
-namespace BY.Busniness
+namespace BY.Business
 {
     public interface ICustomerBusiness
     {

@@ -38,7 +38,7 @@ public partial class Net1704_221_2_BYContext : DbContext
         string connectionString = config.GetConnectionString(connectionStringName);
         return connectionString;
     }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
 

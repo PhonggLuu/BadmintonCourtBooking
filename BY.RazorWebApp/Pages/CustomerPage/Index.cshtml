@@ -1,0 +1,66 @@
+﻿@page
+@model BY.RazorWebApp.Pages.CustomerPage.IndexModel
+
+@{
+    ViewData["Title"] = "Customer";
+}
+
+<h1>Customer Management</h1>
+
+<p>
+    <a style="float: right;" class="btn btn-primary" asp-page="Create">Create</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="card-title text-center">Name</th>
+            <th class="card-title text-center">Email</th>
+            <th class="card-title text-center">Address</th>
+            <th class="card-title text-center">Phone</th>
+            <th class="card-title text-center">Number Slot</th>
+            <th class="card-title text-center">Gender</th>
+            <th class="card-title text-center">Year Of Birth</th>
+            <th class="card-title text-center">Register Date</th>
+            <th class="card-title text-center">Active</th>
+            <th class="card-title text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Customers) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.NumberSlot)
+            </td>
+            <td class="text-center">
+                @(item.Gender ? "Nam" : "Nữ")
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.YearOfBirth)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.RegisterDate)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td class="text-center">
+                <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                <a class="btn btn-success" asp-page="./Details" asp-route-id="@item.CustomerId">Detail</a> |
+                <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

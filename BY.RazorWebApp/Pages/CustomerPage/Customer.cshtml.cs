@@ -1,7 +1,9 @@
-using BY.Busniness;
+using BY.Business;
 using BY.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace BY.RazorWebApp.Pages
 {
@@ -19,6 +21,15 @@ namespace BY.RazorWebApp.Pages
         public IActionResult OnPost()
         {
             AddCustomer();
+            return RedirectToPage();
+        }
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            var item = await _business.GetById(id);
+            if (item != null)
+            {
+                await _business.Delete(id);
+            }
             return RedirectToPage();
         }
 

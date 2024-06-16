@@ -19,13 +19,13 @@ public partial class Customer
 
     public int? NumberSlot { get; set; }
 
-    public bool? Gender { get; set; }
+    public bool Gender { get; set; }
 
     public DateOnly? YearOfBirth { get; set; }
 
     public DateTime? RegisterDate { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }
