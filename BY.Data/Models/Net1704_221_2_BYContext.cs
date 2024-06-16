@@ -9,6 +9,10 @@ namespace BY.Data.Models;
 
 public partial class Net1704_221_2_BYContext : DbContext
 {
+    public Net1704_221_2_BYContext()
+    {
+        
+    }
     public Net1704_221_2_BYContext(DbContextOptions<Net1704_221_2_BYContext> options)
         : base(options)
     {
@@ -23,10 +27,7 @@ public partial class Net1704_221_2_BYContext : DbContext
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
-    public Net1704_221_2_BYContext()
-    {
 
-    }
     public static string GetConnectionString(string connectionStringName)
     {
         var config = new ConfigurationBuilder()
@@ -37,13 +38,10 @@ public partial class Net1704_221_2_BYContext : DbContext
         string connectionString = config.GetConnectionString(connectionStringName);
         return connectionString;
     }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
-    /*   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       {
-           optionsBuilder.UseSqlServer("data source=DESKTOP-V5JCDV7\\LOCALHOST;initial catalog=Net1704_221_2_BY;user id=sa;password=12345;Integrated Security=True;TrustServerCertificate=True");
-           base.OnConfiguring(optionsBuilder);
-       }*/
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
@@ -57,6 +55,7 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.Property(e => e.PaymentStatus).HasMaxLength(50);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.TotalPrice).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.Vat).HasColumnName("VAT");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.CustomerId)
@@ -87,7 +86,20 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.ToTable("Court");
 
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
+            entity.Property(e => e.Address).HasMaxLength(200);
+            entity.Property(e => e.Area)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Color)
+                .HasMaxLength(50)
+                .IsFixedLength();
             entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.SurfaceType)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -99,7 +111,7 @@ public partial class Net1704_221_2_BYContext : DbContext
                 .HasMaxLength(150)
                 .IsFixedLength();
             entity.Property(e => e.Email)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .IsFixedLength();
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
@@ -107,6 +119,7 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(12)
                 .IsFixedLength();
+            entity.Property(e => e.RegisterDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Schedule>(entity =>
@@ -115,8 +128,10 @@ public partial class Net1704_221_2_BYContext : DbContext
 
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
             entity.Property(e => e.CourtId).HasColumnName("CourtID");
-            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Event).HasMaxLength(255);
+            entity.Property(e => e.Notes).HasMaxLength(255);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.StaffCheck).HasMaxLength(255);
 
             entity.HasOne(d => d.Court).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.CourtId)

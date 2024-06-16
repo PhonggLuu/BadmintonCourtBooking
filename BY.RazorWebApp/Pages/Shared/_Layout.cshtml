@@ -8,38 +8,56 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BY.RazorWebApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">BadmintonYard</a>
+                <div class="d-flex align-items-center">
+                    <img height="70" width="70" src="~/image/badminton-logo.png" alt="logo" />
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Badminton Yard</a>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse flex-md-grow-0 collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/CourtPage/CourtPage">Court</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Booking">Booking</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/CustomerPage/Customer">Customer</a>
+                            <a class="nav-link text-dark position-relative" asp-area="" asp-page="/Payment">
+                                <i class="fa fa-ticket fa-2x" aria-hidden="true"></i>
+                                <div id="cart">
+
+                                </div>
+                            </a>
+                        </li>
+                        @* <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/CourtPage/CourtPage">Booking</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/CustomerPage/Index">Customer</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/CourtPage/CourtPage">Court</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/CustomerPage/Customer">Customer</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/SchedulePage/SchedulePage">Schedule</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area=""
-                                asp-page="/BookingDetailPage/BookingDetail">BookingDetail</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/SchedulePageV2/Index">ScheduleV2</a>
                         </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area=""
+                        asp-page="/BookingDetailPage/BookingDetail">BookingDetail</a>
+                        </li> *@
                     </ul>
                 </div>
             </div>
@@ -51,17 +69,74 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - BadmintonYard - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="border-top">
+        <div class="container py-3">
+            <div class="row d-flex justify-content-between">
+                <div class="col-3 mx-3">
+                    <div class="d-flex align-items-center">
+                        <img height="70" width="70" src="~/image/badminton-logo.png" alt="logo" />
+                        <a style="text-decoration: none; color: black; font-size: 20px; font-weight: bold;" asp-area=""
+                            asp-page="/Index">Badminton Yard</a>
+                    </div>
+                    <p class="mt-3">
+                        We don't just provide badminton courts, we create a space for connection, health and joy..
+                    </p>
+                </div>
+                <div class="col-3">
+                    <p class="mt-3" style="font-weight: bold; font-size: 18px;">
+                        Do you need support
+                    </p>
+                    <h3>1900 6750</h3>
+                    <p>Address: Đ. Số 8, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Vietnam.</p>
+                    <p>Email: badmintonyard@gmail.com</p>
+                </div>
+                <div class="col-3">
+                    <p class="mt-3" style="font-weight: bold; font-size: 18px;">
+                        Customer support
+                    </p>
+                    <a style="text-decoration: none; color: black;" href="/" class="d-block">Home</a>
+                    <a style="text-decoration: none; color: black;" class="d-block mt-3">Booking yard</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-muted text-center mt-4">
+            &copy; 2024 - Badminton Yard
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script>
+        $(document).ready(function () {
+            function onLoadFunction() {
+                console.log("Function onLoadFunction called");
+                $.ajax({
+                    type: "GET",
+                    url: "/CourtDetail?handler=AmounTicket",
+                    success: function (data) {
+                        if (data !== '' && data > 0) {
+                            $("#cart").html(
+                                `
+                                        <p style="top: 0; right:0; height: 23px; width: 23px;"
+                                            class="bg-danger text-center rounded-circle text-white position-absolute">
+                                            ${data}
+                                        </p>
+                                `
+                            )
+                        } else {
+                            $("#cart").html("")
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Request Failed:', status, error, xhr.responseText);
+                    }
+                });
+            }
+            onLoadFunction();
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>
+

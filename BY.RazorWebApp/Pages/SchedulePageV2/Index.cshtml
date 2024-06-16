@@ -1,0 +1,79 @@
+﻿@page
+@model BY.RazorWebApp.Pages.SchedulePageV2.IndexModel
+
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<h1>Schedule</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].StaffCheck)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule[0].IsBooked)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Schedule)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffCheck)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsBooked)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ScheduleId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ScheduleId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ScheduleId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,10 +1,110 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid py-5">
+    <div class="position-relative mb-5">
+        <img src="~/image/banner.png" class="h-50 w-100" style="object-fit: cover" />
+        <div class="position-absolute" style="right: 8%; top: 40%">
+            <h4>
+                Sport for All with Booking Yard<br>
+                Your One-Touch<br>
+                Booking System<br>
+            </h4>
+            <a href="/Booking">
+                <button type="button" class="mt-2 p-3 btn btn-dark rounded-pill">
+                    Booking here <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="mt-5" style="background-color: #e6e6e6;">
+        <h4 class="text-center pt-4">Yar For you</h4>
+        <div class="p-4 row">
+            @if (Model.Courts != null && Model.Courts.Count > 0)
+            {
+                foreach (var court in Model.Courts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                        <div class="card p-2" style="border-radius: 20px; width: 100%;">
+                            <a asp-page="./CourtDetail" asp-route-id="@court.CourtId" style="height: 200px;">
+                                <img src="@court.Image" class="card-img-top h-100" style="cursor: pointer;" alt="yard">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@court.Name</h5>
+                                <p class="card-text">
+                                    <i class="fa fa-map-marker" aria-hidden="true">
+                                        @court.Address</i>
+                                </p>
+                                <div class="float-end">
+                                    <h5 class="my-auto">60k/h</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+
+    <div class="mt-5 mb-2">
+        <h4 class="text-center pt-4">Acctractive features</h4>
+        <h5 class="text-center text-muted">Features make it easier for you to book a yard on the website</h5>
+        <div class="p-4 row justify-content-between">
+            <div class="mx-2 my-2" style="width: 18rem">
+                <img src="~/image/feature1.png" class="card-img-top mt-2" alt="yard">
+                <div class="card-body">
+                    <h5 class="text-center">Size and amentities</h5>
+                    <p class="text-center">
+                        Your badminton court can be designed according to standard dimensions, ensuring the space is
+                        large enough for the match.
+                    </p>
+                </div>
+            </div>
+            <div class="mx-2 my-2" style="width: 18rem">
+                <img src="~/image/feature2.png" class="card-img-top mt-2" alt="yard">
+                <div class="card-body">
+                    <h5 class="text-center">Playing floor and lighting</h5>
+                    <p class="text-center">
+                        Good lighting will create favorable conditions for the match to take place at all times, even in
+                        the evening.
+                    </p>
+                </div>
+            </div>
+            <div class="mx-2 my-2" style="width: 18rem">
+                <img src="~/image/feature3.png" style="height: 11rem;" class="card-img-top mt-2" alt="yard">
+                <div class="card-body">
+                    <h5 class="text-center">Online yard booking system</h5>
+                    <p class="text-center">
+                        The online course booking feature helps players easily plan.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 row justify-content-around">
+            <div class="mx-2 my-2" style="width: 21rem">
+                <img src="~/image/feature4.png" class="card-img-top mt-2" alt="yard">
+                <div class="card-body">
+                    <h5 class="text-center">Reasonable and flexible prices</h5>
+                    <p class="text-center">
+                        Reasonable price policy suitable for students, workers with flexible hours, or groups who play
+                        badminton regularly.
+                    </p>
+                </div>
+            </div>
+            <div class="mx-2 my-2" style="width: 21rem">
+                <img src="~/image/feature5.png" style="height: 15.4rem;" class="card-img-top mt-2" alt="yard">
+                <div class="card-body">
+                    <h5 class="text-center">Customer care</h5>
+                    <p class="text-center">
+                        Dedicated customer care from assisting with field reservations to solving problems that arise
+                        during play.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

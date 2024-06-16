@@ -1,0 +1,160 @@
+﻿@page
+@model MyApp.Namespace.BookingModel
+@{
+    ViewData["Title"] = "Booking";
+}
+<div class="container-fluid py-5">
+    <form class="shadow-lg rounded-3 shadow-lg py-3">
+        <div class="">
+            <div class="row mx-2">
+                <div class="col-lg-2 mt-2">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-0 w-75">Sort by:</p>
+                        <select name="sortby" class="w-100 form-select">
+                            <option value="">None</option>
+                            <option selected="@(Model.SortBy == "name")" value="name">Name</option>
+                            <option selected="@(Model.SortBy == "address")" value="address">Address</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-3 mt-2">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-0 w-25">Order by:</p>
+                        <select value="@Model.OrderBy" name="orderby" class="form-select w-75">
+                            <option value="">None</option>
+                            <option selected="@(Model.OrderBy == "asc")" value="asc">Ascending</option>
+                            <option selected="@(Model.OrderBy == "desc")" value="desc">Descending</option>
+                        </select>
+                    </div>
+                </div>
+                @* <div class="col-lg-3 mt-2">
+                <div class="d-flex align-items-center">
+                <p class="mb-0 w-50">Date Play:</p>
+                <p style="width: 10px;"></p>
+                <input min="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" type="date" />
+                </div>
+                </div> *@
+                <div class="col-lg-4 mt-2">
+
+                </div>
+                <div class="col-lg-3 mt-2">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" value="@Model.Search" placeholder="Search"
+                            aria-describedby="" />
+                        <div class="input-group-append">
+                            <button type="submit" id="search" class="input-group-text h-100 btn-danger"
+                                style="cursor: pointer;">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="content" class="row mt-3 mx-2">
+            @if (Model.Courts != null && Model.Courts.Count > 0)
+            {
+                foreach (var court in Model.Courts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 my-2">
+                        <div class="card">
+                            <a asp-page="/CourtDetail" style="cursor: pointer; height: 200px;" asp-route-id="@court.CourtId">
+                                <img src="@court.Image" class="card-img-top h-100" alt="@court.Name">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@court.Name</h5>
+                                <p class="card-text">
+                                    <i class="fa fa-map-marker" aria-hidden="true">
+                                        @court.Address</i>
+                                </p>
+                                <div class="float-end">
+                                    <h5 class="my-auto">60k/h</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-12 mt-4">
+                    <nav class="float-end" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <input type="hidden" name="page" value="1" />
+                            <input type="hidden" name="pagesize" value="10"/>
+                            <li class="page-item @(Model.CurrentPage > 1 ? "" : "disabled")">
+                                <a class="page-link" href="#"
+                                    onclick="updatePage(@(Model.CurrentPage - 1)); return false;">Previous</a>
+                            </li>
+                            <!-- First Page Link and Ellipsis -->
+                            @if (Model.CurrentPage > 4)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="#" onclick="updatePage(1); return false;">1</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+
+                            <!-- Dynamic Page Numbers -->
+                            @{
+                                int startPage = Math.Max(1, Model.CurrentPage - 2);
+                                int endPage = Math.Min(Model.PageTotal, Model.CurrentPage + 2);
+
+                                if (endPage - startPage < 4)
+                                {
+                                    if (startPage > 1)
+                                    {
+                                        startPage = Math.Max(1, endPage - 4);
+                                    }
+                                    if (endPage < Model.PageTotal)
+                                    {
+                                        endPage = Math.Min(Model.PageTotal, startPage + 4);
+                                    }
+                                }
+
+                                for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                        <a class="page-link" href="#" onclick="updatePage(@i); return false;">@i</a>
+                                    </li>
+                                }
+                            }
+
+                            <!-- Last Page Link and Ellipsis -->
+                            @if (Model.CurrentPage < Model.PageTotal - 3)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#"
+                                        onclick="updatePage(@Model.PageTotal); return false;">@Model.PageTotal</a>
+                                </li>
+                            }
+
+                            <li class="page-item @(Model.PageTotal == Model.CurrentPage ? "disabled" : "")">
+                                <a class="page-link" href="#"
+                                    onclick="updatePage(@(Model.CurrentPage + 1)); return false;">Next</a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+            }
+            else
+            {
+                <div class="py-5 text-center" style="height: 350px;">
+                    <div class="d-flex justify-content-center h-100" style="align-items: center;">
+                        <h4>Not found any Yard</h4>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</div>
+
+<script>
+    function updatePage(pageNumber) {
+        document.querySelector('input[name="page"]').value = pageNumber;
+        document.querySelector('form').submit();
+    }
+</script>

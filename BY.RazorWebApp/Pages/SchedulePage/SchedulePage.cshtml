@@ -15,14 +15,20 @@
     @Model.Error
   </div>
 }
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-  <div class="col-md-12 text-end">
+<h1 class="text-center">Schedule Management</h1>
+<form class="d-flex justify-content-between">
+    <div class="input-group w-50">
+        <input type="text" name="search" class="form-control" value="@(Model.Search)" placeholder="Search" aria-describedby="" />
+        <div class="input-group-append">
+            <button type="submit" id="search" class="input-group-text h-100 btn-danger" style="cursor: pointer;">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
     <button type="button" class="btn btn-primary" onclick="add();">
       Add
     </button>
-  </div>
-</div>
+</form>
 
 <table class="table">
   <thead>
@@ -33,6 +39,9 @@
       <th scope="col">To</th>
       <th scope="col">Price</th>
       <th scope="col">Date</th>
+      <th scope="col">Notes</th>
+      <th scope="col">Staff Check</th>
+      <th scope="col">Event</th>
       <th scope="col">IsBooked</th>
       <th scope="col"></th>
     </tr>
@@ -49,10 +58,16 @@
           <td>@schedule.To</td>
           <td>@schedule.Price</td>
           <td>@schedule.Date</td>
+          <td>@schedule.Notes</td>
+          <td>@schedule.StaffCheck</td>
+          <td>@schedule.Event</td>
           <td>@schedule.IsBooked</td>
           <td>
             <a class="btn btn-warning" asp-page="./Edit" asp-route-id="@schedule.ScheduleId">
               Edit
+            </a>
+            <a class="btn btn-info" asp-page="./Detail" asp-route-id="@schedule.ScheduleId">
+              Detail
             </a>
             <button class="btn btn-danger" onclick="confirmDelete(@schedule.ScheduleId);">Remove</button>
           </td>
@@ -84,14 +99,14 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label asp-for="Schedule.From" class="control-label"></label>
+                <label asp-for="Schedule.From" class="control-label mb-1"></label>
                 <input asp-for="Schedule.From" type="time" class="form-control" />
                 <span asp-validation-for="Schedule.From" class="text-danger"></span>
               </div>
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label asp-for="Schedule.To" class="control-label"></label>
+                <label asp-for="Schedule.To" class="control-label mb-1"></label>
                 <input asp-for="Schedule.To" type="time" class="form-control" />
                 <span asp-validation-for="Schedule.To" class="text-danger"></span>
               </div>
@@ -100,7 +115,7 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label asp-for="Schedule.CourtId" class="control-label">Court</label>
+                <label asp-for="Schedule.CourtId" class="control-label mt-1 mb-1">Court</label>
                 <select asp-for="Schedule.CourtId" class="form-control">
                   <option value="">Select a Court</option>
                   @if (Model.Courts != null && Model.Courts.Count > 0)
@@ -116,17 +131,53 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label asp-for="Schedule.Price" class="control-label"></label>
+                <label asp-for="Schedule.Price" class="control-label mt-1 mb-1"></label>
                 <input asp-for="Schedule.Price" type="number" class="form-control" />
                 <span asp-validation-for="Schedule.Price" class="text-danger"></span>
               </div>
             </div>
           </div>
-          <div class="col12">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Schedule.Date" class="control-label mt-1 mb-1"></label>
+                <input asp-for="Schedule.Date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date"
+                  class="form-control" />
+                <span asp-validation-for="Schedule.Date" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Schedule.Event" class="control-label mt-1 mb-1"></label>
+                <input asp-for="Schedule.Event" type="text" class="form-control" />
+                <span asp-validation-for="Schedule.Event" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Schedule.StaffCheck" class="control-label mt-1 mb-1"></label>
+                <input asp-for="Schedule.StaffCheck" type="text" class="form-control" />
+                <span asp-validation-for="Schedule.StaffCheck" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Schedule.IsBooked" class="control-label mt-1 mb-1"></label>
+                <select asp-for="Schedule.IsBooked" class="form-control">
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+
+                </select>
+                <span asp-validation-for="Schedule.IsBooked" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="form-group">
-              <label asp-for="Schedule.Date" class="control-label"></label>
-              <input asp-for="Schedule.Date" min="@DateTime.Now.Date.ToString("dd/MM/dd")" type="date"
-                class="form-control" />
+              <label asp-for="Schedule.Notes" class="control-label mt-1 mb-1"></label>
+              <textarea asp-for="Schedule.Notes" class="form-control"></textarea>
               <span asp-validation-for="Schedule.Date" class="text-danger"></span>
             </div>
           </div>

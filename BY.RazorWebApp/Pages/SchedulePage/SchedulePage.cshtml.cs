@@ -20,6 +20,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         public Schedule Schedule { get; set; } = new Schedule();
         [BindProperty]
         public List<Court>? Courts { get; set; } = new List<Court>();
+        public string Search { get; set; } = string.Empty;
         public async Task OnGetCourtAsync()
         {
             var courtResult = await _courtBusiness.GetAllCourt();
@@ -29,7 +30,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             }
             else
             {
-                if(courtResult != null && courtResult.Status == -4)
+                if (courtResult != null && courtResult.Status == -4)
                 {
                     Error = "The system occur error. Please try it again.";
                 }
@@ -45,7 +46,21 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             var scheduleResult = await _scheduleBusiness.GetAllSchedule();
             if (scheduleResult != null && scheduleResult.Status == 1)
             {
-                Schedules = scheduleResult.Data as List<Schedule>;
+                string search = Request.Query["search"];
+                if (string.IsNullOrEmpty(search))
+                {
+                    Schedules = scheduleResult.Data as List<Schedule>;
+                }
+                else
+                {
+                    Search = search;
+                    Schedules = scheduleResult.Data as List<Schedule>;
+                    if (Schedules != null && Schedules.Count > 0)
+                    {
+                        Schedules = Schedules.Where(s => (s.StaffCheck != null && s.StaffCheck.ToLower().Contains(search.ToLower().Trim()) || 
+                            s.Event != null && s.Event.ToLower().Contains(search.ToLower().Trim()))).ToList();
+                    }
+                }
             }
             else
             {
@@ -76,6 +91,18 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         {
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+            if (Schedule.From > Schedule.To)
+            {
+                Error = "Time From not great than or equal time To";
+                await OnGetAsync();
+                return Page();
+            }
+            if (Schedule.Date < DateOnly.FromDateTime(DateTime.Now.Subtract(TimeSpan.FromDays(1))))
+            {
+                Error = "Date not less than today";
+                await OnGetAsync();
                 return Page();
             }
             var resultCreate = await _scheduleBusiness.CreateSchedule(Schedule);

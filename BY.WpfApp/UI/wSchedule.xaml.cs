@@ -108,7 +108,8 @@ namespace BY.WpfApp.UI
             }
             if (!int.TryParse(txtScheduleId.Text, out int scheduleId))
             {
-                Schedule schedule = new Schedule() { 
+                Schedule schedule = new Schedule()
+                {
                     CourtId = selectedCourt.CourtId,
                     From = startTime,
                     To = endTime,
@@ -121,7 +122,7 @@ namespace BY.WpfApp.UI
                 {
                     LoadGrdSchedule();
                     SetValueDefault();
-                    MessageBox.Show(result?.Message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Create new schedule susscessfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -130,26 +131,32 @@ namespace BY.WpfApp.UI
             }
             else
             {
-                Schedule schedule = new Schedule()
+                var scheduleResult = await _scheduleBusiness.GetScheduleById(scheduleId);
+                if (scheduleResult != null && scheduleResult.Status > 0 && scheduleResult.Data != null)
                 {
-                    ScheduleId = scheduleId,
-                    CourtId = selectedCourt.CourtId,
-                    From = startTime,
-                    To = endTime,
-                    Price = money,
-                    Date = startDate.Date,
-                    IsBooked = txtIsBooked.IsChecked
-                };
-                var result = await _scheduleBusiness.UpdateSchedule(schedule);
-                if (result != null && result.Status > 0)
-                {
-                    SetValueDefault();
-                    LoadGrdSchedule();
-                    MessageBox.Show(result?.Message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Update fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var schedule = scheduleResult.Data as Schedule;
+                    if (schedule != null)
+                    {
+                        schedule.ScheduleId = scheduleId;
+                        schedule.CourtId = schedule.CourtId;
+                        schedule.From = startTime;
+                        schedule.To = endTime;
+                        schedule.Price = money;
+                        schedule.Date = startDate.Date;
+                        schedule.IsBooked = txtIsBooked.IsChecked;
+
+                        var result = await _scheduleBusiness.UpdateSchedule(schedule);
+                        if (result != null && result.Status > 0)
+                        {
+                            SetValueDefault();
+                            LoadGrdSchedule();
+                            MessageBox.Show(result?.Message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Update fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
                 }
             }
         }
@@ -157,7 +164,8 @@ namespace BY.WpfApp.UI
         {
             SetValueDefault();
         }
-        private void SetValueDefault() {
+        private void SetValueDefault()
+        {
             txtScheduleId.Text = "";
             txtCourt.SelectedItem = null;
             txtFrom.Text = "";
@@ -166,23 +174,36 @@ namespace BY.WpfApp.UI
             txtDate.Text = "";
             txtIsBooked.IsChecked = false;
         }
-        private void grdSchedule_MouseDouble_Click(object sender, RoutedEventArgs e)
+        private async void grdSchedule_MouseDouble_Click(object sender, RoutedEventArgs e)
         {
-            var schedule = grdSchedule.SelectedItem as Schedule;
-            if (schedule != null)
+            DataGrid? grd = sender as DataGrid;
+            if (grd != null && grd.SelectedItems != null && grd.SelectedItems.Count == 1)
             {
-                txtScheduleId.Text = schedule.ScheduleId.ToString();
-                txtCourt.SelectedValue = schedule.CourtId;
-                txtFrom.Text = schedule.From.ToString();
-                txtTo.Text = schedule.To.ToString();
-                txtPrice.Text = schedule.Price.ToString();
-                txtDate.Text = schedule.Date.ToString();
-                txtIsBooked.IsChecked = schedule.IsBooked;
+                var row = grd.ItemContainerGenerator.ContainerFromItem(grd.SelectedItem) as DataGridRow;
+                if (row != null)
+                {
+                    var item = row.Item as Schedule;
+                    if (item != null)
+                    {
+                        var scheduleResult = await _scheduleBusiness.GetScheduleById(item.ScheduleId);
+                        if (scheduleResult.Status > 0 && scheduleResult.Data != null)
+                        {
+                            item = scheduleResult.Data as Schedule;
+                            if(item != null)
+                            {
+                                txtScheduleId.Text = item.ScheduleId.ToString();
+                                txtCourt.SelectedValue = item.CourtId;
+                                txtFrom.Text = item.From.ToString();
+                                txtTo.Text = item.To.ToString();
+                                txtPrice.Text = item.Price.ToString();
+                                txtDate.Text = item.Date.ToString();
+                                txtIsBooked.IsChecked = item.IsBooked;
+                            }
+                        }
+                    }
 
-            }
-            else
-            {
-                MessageBox.Show("Not Found Schedule", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
             }
         }
         private void grdSchedule_SelectionChanged(object sender, RoutedEventArgs e)
@@ -191,19 +212,29 @@ namespace BY.WpfApp.UI
         }
         private async void grdSchedule_ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            var schedule = grdSchedule.SelectedItem as Schedule;
-            if (schedule != null)
+            Button btn = (Button)sender;
+            if (int.TryParse(btn.CommandParameter.ToString(), out int scheduleId))
             {
-                var result = await _scheduleBusiness.DeleteSchedule(schedule);
-                if (result != null && result.Status > 0)
-                {
-                    LoadGrdSchedule();
-                    MessageBox.Show("Delete Schedule successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Delete Schedule Fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var scheduleResult = await _scheduleBusiness.GetScheduleById(scheduleId);
+                if (scheduleResult.Status > 0 && scheduleResult.Data != null)
+                {   var schedule = scheduleResult.Data as Schedule;
+                    if(schedule != null)
+                    {
+                        if (MessageBox.Show("Are you sure delete", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            var result = await _scheduleBusiness.DeleteSchedule(schedule);
+                            if (result != null && result.Status > 0)
+                            {
+                                LoadGrdSchedule();
+                                MessageBox.Show("Delete Schedule successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Delete Schedule Fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
+                            }
+                        }
+                    }
                 }
             }
             else

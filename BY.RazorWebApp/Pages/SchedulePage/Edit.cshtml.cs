@@ -54,6 +54,18 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             {
                 return Page();
             }
+            if (Schedule.From > Schedule.To)
+            {
+                Error = "Time From not great than or equal time To";
+                await OnGetCourtAsync();
+                return Page();
+            }
+            if (Schedule.Date < DateOnly.FromDateTime(DateTime.Now.Subtract(TimeSpan.FromDays(1))))
+            {
+                Error = "Date not less than today";
+                await OnGetCourtAsync();
+                return Page();
+            }
             var resultCreate = await _scheduleBusiness.UpdateSchedule(Schedule);
             if (resultCreate != null && resultCreate?.Status == 1)
             {

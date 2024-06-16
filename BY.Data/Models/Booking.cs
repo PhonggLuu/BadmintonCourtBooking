@@ -23,6 +23,10 @@ public partial class Booking
 
     public string PaymentStatus { get; set; }
 
+    public int? Discount { get; set; }
+
+    public int? Vat { get; set; }
+
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
     public virtual Customer Customer { get; set; }
