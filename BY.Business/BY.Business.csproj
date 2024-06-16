@@ -11,9 +11,4 @@
     <ProjectReference Include="..\BY.Common\BY.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

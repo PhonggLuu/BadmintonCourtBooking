@@ -96,12 +96,12 @@ namespace BY.WpfApp.UI
                 MessageBox.Show("Please money great than zero ", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (!DateTime.TryParse(txtDate.Text, out DateTime startDate))
+            if (!DateOnly.TryParse(txtDate.Text, out DateOnly startDate))
             {
                 MessageBox.Show("Please chose Start Date ", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (startDate.Date < DateTime.Now.Date)
+            if (startDate < DateOnly.FromDateTime(DateTime.Now))
             {
                 MessageBox.Show("Please chose current Date or future Date ", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -114,7 +114,7 @@ namespace BY.WpfApp.UI
                     From = startTime,
                     To = endTime,
                     Price = money,
-                    Date = startDate.Date,
+                    Date = startDate,
                     IsBooked = txtIsBooked.IsChecked
                 };
                 var result = await _scheduleBusiness.CreateSchedule(schedule);
@@ -142,7 +142,7 @@ namespace BY.WpfApp.UI
                         schedule.From = startTime;
                         schedule.To = endTime;
                         schedule.Price = money;
-                        schedule.Date = startDate.Date;
+                        schedule.Date = startDate;
                         schedule.IsBooked = txtIsBooked.IsChecked;
 
                         var result = await _scheduleBusiness.UpdateSchedule(schedule);
