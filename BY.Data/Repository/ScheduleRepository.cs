@@ -27,5 +27,16 @@ namespace BY.Data.Repository
             }
             return times;
         }
+
+        public bool ExistSchedule(int courtId,DateOnly datePLay, TimeOnly timePlay) {
+            var schedule =  _context.Schedules.Where(s => s.CourtId == courtId 
+                                                    && s.Date == datePLay 
+                                                    && s.From == timePlay).FirstOrDefault();
+            return schedule != null;
+        }
+           
+
+        public  Schedule GetScheduleLastest() =>  _context.Schedules.OrderByDescending(x => x.ScheduleId).FirstOrDefault();
+        
     }
 }

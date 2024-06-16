@@ -4,6 +4,7 @@ using BY.Common;
 using BY.Data.Models;
 using BY.Data;
 using System.Net.Http;
+using System.Transactions;
 
 namespace BY.Business
 {
@@ -14,7 +15,7 @@ namespace BY.Business
         Task<BusinessResult> UpdateBooking(Booking booking);
         Task<BusinessResult> DeleteBooking(Booking booking);
         Task<BusinessResult> GetBookingById(int idBooking);
-
+        Task<BusinessResult> CreateBookingV2(List<Cart> carts, Customer customer);
     }
     public class BookingBusiness : IBookingBusiness
     {
@@ -43,6 +44,102 @@ namespace BY.Business
             catch (Exception e)
             {
                 return new BusinessResult(Const.ERROR_EXCEPTION, e.ToString());
+            }
+        }
+
+        public async Task<BusinessResult> CreateBookingV2(List<Cart> carts, Customer customer)
+        {
+
+            if (carts.Count == 0)
+            {
+                return new BusinessResult(Const.FAIL_CREATE_CODE, $"You do not booking any court");
+            }
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    List<int> scheduleIds = new List<int>();
+                    //create schedule
+                    foreach (var cart in carts)
+                    {
+                        if (cart.DatePlay < DateOnly.FromDateTime(DateTime.Now))
+                        {
+                            transaction.Dispose();
+                            return new BusinessResult(Const.FAIL_CREATE_CODE, $"{cart.CourtName} - {cart.DatePlay} : Date play invalid");
+                        }
+                        if (cart.DatePlay == DateOnly.FromDateTime(DateTime.Now) && cart.TimePlay < TimeOnly.FromDateTime(DateTime.Now))
+                        {
+                            transaction.Dispose();
+                            return new BusinessResult(Const.FAIL_CREATE_CODE, $"{cart.CourtName} - {cart.DatePlay} - {cart.TimePlay} : Time play invalid");
+                        }
+                        var schedule = new Schedule
+                        {
+                            CourtId = cart.CourtId,
+                            From = cart.TimePlay,
+                            To = cart.TimePlay.AddHours(1),
+                            Date = cart.DatePlay,
+                            Price = 60,
+                            IsBooked = false
+                        };
+
+                        if (!_unitOfWork.ScheduleRepository.ExistSchedule(cart.CourtId, cart.DatePlay, cart.TimePlay))
+                        {
+                            await _unitOfWork.ScheduleRepository.CreateAsync(schedule);
+                            schedule = _unitOfWork.ScheduleRepository.GetScheduleLastest();
+                            scheduleIds.Add(schedule.ScheduleId);
+                        }
+                        else
+                        {
+                            transaction.Dispose();
+                            return new BusinessResult(Const.FAIL_CREATE_CODE, $"{cart.CourtName} - {cart.DatePlay} - {cart.TimePlay} : booked by another customer");
+                        }
+
+                    }
+
+                    //get customer 
+                    var cus = _unitOfWork.CustomerRepository.FindUser(customer.Email, customer.Phone);
+                    if (cus == null)
+                    {
+                        await _unitOfWork.CustomerRepository.CreateAsync(customer);
+                        cus = _unitOfWork.CustomerRepository.GetCustomerLatest();
+                    }
+                    Booking booking = new Booking
+                    {
+                        CustomerId = cus.CustomerId,
+                        TotalPrice = carts.Count * 60,
+                        Status = true,
+                        StartDate = DateTime.Now,
+                        CreateDate = DateTime.Now,
+                        PaymentMethod = "Credit Card",
+                        PaymentStatus = "Pending",
+                        Discount = 0,
+                        Vat = 0,
+                    };
+                    await _unitOfWork.BookingRepositoty.CreateAsync(booking);
+                    booking = _unitOfWork.BookingRepositoty.GetBookingLatest();
+
+                    foreach (int scheduleId in scheduleIds)
+                    {
+                        var bookingDetail = new BookingDetail
+                        {
+                            Amount = 1,
+                            Price = 60,
+                            BookingId = booking.BookingId,
+                            ScheduleId = scheduleId,
+                        };
+                        _unitOfWork.BookingDetailRepository.CreateAsync(bookingDetail);
+                    }
+                    transaction.Complete();
+                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+                }
+                catch (Exception e)
+                {
+                    return new BusinessResult(Const.ERROR_EXCEPTION, e.ToString());
+                }
+                finally
+                {
+                    transaction.Dispose();
+                }
             }
         }
 
