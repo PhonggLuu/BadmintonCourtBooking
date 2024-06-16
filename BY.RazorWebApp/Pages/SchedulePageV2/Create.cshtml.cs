@@ -52,7 +52,7 @@ namespace BY.RazorWebApp.Pages.SchedulePageV2
                 await OnGetAsync();
                 return Page();
             }
-            if(Schedule.Date < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
+            if(Schedule.Date <  DateOnly.FromDateTime(DateTime.Now.Subtract(TimeSpan.FromDays(1))))
             {
                 Error = "Date not less than today";
                 await OnGetAsync();

@@ -17,7 +17,7 @@ public partial class Schedule
 
     public decimal? Price { get; set; }
 
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
     public string Notes { get; set; }
 

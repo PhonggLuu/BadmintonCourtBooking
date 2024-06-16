@@ -34,10 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark position-relative" asp-area="" asp-page="/Payment">
                                 <i class="fa fa-ticket fa-2x" aria-hidden="true"></i>
-                                <p style="top: 0; right:0; height: 23px; width: 23px;"
-                                    class="bg-danger text-center rounded-circle text-white position-absolute">
-                                    34
-                                </p>
+                                <div id="cart">
+
+                                </div>
                             </a>
                         </li>
                         @* <li class="nav-item">
@@ -108,8 +107,36 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script>
+        $(document).ready(function () {
+            function onLoadFunction() {
+                console.log("Function onLoadFunction called");
+                $.ajax({
+                    type: "GET",
+                    url: "/CourtDetail?handler=AmounTicket",
+                    success: function (data) {
+                        if (data !== '' && data > 0) {
+                            $("#cart").html(
+                                `
+                                        <p style="top: 0; right:0; height: 23px; width: 23px;"
+                                            class="bg-danger text-center rounded-circle text-white position-absolute">
+                                            ${data}
+                                        </p>
+                                `
+                            )
+                        } else {
+                            $("#cart").html("")
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Request Failed:', status, error, xhr.responseText);
+                    }
+                });
+            }
+            onLoadFunction();
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>
+

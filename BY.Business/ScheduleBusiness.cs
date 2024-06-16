@@ -13,6 +13,7 @@ namespace BY.Business
         Task<BusinessResult> UpdateSchedule(Schedule schedule);
         Task<BusinessResult> DeleteSchedule(Schedule schedule);
         Task<BusinessResult> GetScheduleById(int idSchedule);
+        Task<BusinessResult> GetTimeCanPlay(int courtId, DateOnly dateTime);
 
     }
     public class ScheduleBusiness : IScheduleBusiness
@@ -94,6 +95,26 @@ namespace BY.Business
                 if (result != null)
                 {
                     return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                }
+            }
+            catch (Exception e)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, e.ToString());
+            }
+        }
+
+        public async Task<BusinessResult> GetTimeCanPlay(int courtId, DateOnly date)
+        {
+            try
+            {
+                var results = await _unitOfWork.ScheduleRepository.GetTimeAsync(courtId, date);
+                if (results != null)
+                {
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, results);
                 }
                 else
                 {

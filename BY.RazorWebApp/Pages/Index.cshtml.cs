@@ -1,3 +1,5 @@
+using BY.Business;
+using BY.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -5,16 +7,23 @@ namespace BY.RazorWebApp.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ICourtBusiness _courtBusiness;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public List<Court>? Courts { get; set; } = new List<Court>();
+        public IndexModel()
         {
-            _logger = logger;
+            _courtBusiness = new CourtBusiness();
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-
+            var courts = await _courtBusiness.GetTop10Court();
+            if (courts.Status > 0 && courts.Data != null)
+            {
+                Courts = courts.Data as List<Court>;
+            }
+            return Page();
         }
     }
 }

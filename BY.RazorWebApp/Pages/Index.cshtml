@@ -13,80 +13,39 @@
                 Your One-Touch<br>
                 Booking System<br>
             </h4>
-           <a href="/Booking">
-             <button type="button" class="mt-2 p-3 btn btn-dark rounded-pill">
-                Booking here <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-            </button>
-           </a>
+            <a href="/Booking">
+                <button type="button" class="mt-2 p-3 btn btn-dark rounded-pill">
+                    Booking here <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                </button>
+            </a>
         </div>
     </div>
     <div class="mt-5" style="background-color: #e6e6e6;">
         <h4 class="text-center pt-4">Yar For you</h4>
         <div class="p-4 row">
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
-                <div class="card p-2" style="border-radius: 20px; width: 100%;">
-                    <img src="~/image/court.png" class="card-img-top" alt="yard">
-                    <div class="card-body">
-                        <h5 class="card-title">Sân Thiên hà</h5>
-                        <p class="card-text">
-                            <i class="fa fa-map-marker" aria-hidden="true">
-                                Đ. Số 8, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Vietnam</i>
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="btn btn-primary">Booking</a>
-                            <h5 class="my-auto">300/h</h5>
+            @if (Model.Courts != null && Model.Courts.Count > 0)
+            {
+                foreach (var court in Model.Courts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                        <div class="card p-2" style="border-radius: 20px; width: 100%;">
+                            <a asp-page="./CourtDetail" asp-route-id="@court.CourtId" style="height: 200px;">
+                                <img src="@court.Image" class="card-img-top h-100" style="cursor: pointer;" alt="yard">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@court.Name</h5>
+                                <p class="card-text">
+                                    <i class="fa fa-map-marker" aria-hidden="true">
+                                        @court.Address</i>
+                                </p>
+                                <div class="float-end">
+                                    <h5 class="my-auto">60k/h</h5>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
-                <div class="card p-2" style="border-radius: 20px; width: 100%;">
-                    <img src="~/image/court.png" class="card-img-top" alt="yard">
-                    <div class="card-body">
-                        <h5 class="card-title">Sân Thiên hà</h5>
-                        <p class="card-text">
-                            <i class="fa fa-map-marker" aria-hidden="true">
-                                Đ. Số 8, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Vietnam</i>
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="btn btn-primary">Booking</a>
-                            <h5 class="my-auto">300/h</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
-                <div class="card p-2" style="border-radius: 20px; width: 100%;">
-                    <img src="~/image/court.png" class="card-img-top" alt="yard">
-                    <div class="card-body">
-                        <h5 class="card-title">Sân Thiên hà</h5>
-                        <p class="card-text">
-                            <i class="fa fa-map-marker" aria-hidden="true">
-                                Đ. Số 8, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Vietnam</i>
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="btn btn-primary">Booking</a>
-                            <h5 class="my-auto">300/h</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
-                <div class="card p-2" style="border-radius: 20px; width: 100%;">
-                    <img src="~/image/court.png" class="card-img-top" alt="yard">
-                    <div class="card-body">
-                        <h5 class="card-title">Sân Thiên hà</h5>
-                        <p class="card-text">
-                            <i class="fa fa-map-marker" aria-hidden="true">
-                                Đ. Số 8, Linh Xuân, Thủ Đức, Thành phố Hồ Chí Minh, Vietnam</i>
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="btn btn-primary">Booking</a>
-                            <h5 class="my-auto">300/h</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                }
+            }
         </div>
 
     </div>

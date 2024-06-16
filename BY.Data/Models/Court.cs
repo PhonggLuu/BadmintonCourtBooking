@@ -17,5 +17,15 @@ public partial class Court
 
     public bool? IsInUse { get; set; }
 
+    public string Type { get; set; }
+
+    public string Color { get; set; }
+
+    public string Address { get; set; }
+
+    public string SurfaceType { get; set; }
+
+    public string Area { get; set; }
+
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 }

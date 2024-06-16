@@ -16,13 +16,19 @@
   </div>
 }
 <h1 class="text-center">Schedule Management</h1>
-<div class="row">
-  <div class="col-md-12 text-end">
+<form class="d-flex justify-content-between">
+    <div class="input-group w-50">
+        <input type="text" name="search" class="form-control" value="@(Model.Search)" placeholder="Search" aria-describedby="" />
+        <div class="input-group-append">
+            <button type="submit" id="search" class="input-group-text h-100 btn-danger" style="cursor: pointer;">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
     <button type="button" class="btn btn-primary" onclick="add();">
       Add
     </button>
-  </div>
-</div>
+</form>
 
 <table class="table">
   <thead>

@@ -18,11 +18,12 @@ namespace BY.Business
         Task<IBusinessResult> Save(Court court);
         Task<IBusinessResult> Update(Court court);
         Task<IBusinessResult> Delete(int id);
+        Task<IBusinessResult> GetTop10Court();
     }
 
     public class CourtBusiness : ICourtBusiness
     {
-       // private readonly CourtDAO _UnitOfWork.CourtRepository;
+        // private readonly CourtDAO _UnitOfWork.CourtRepository;
         private readonly UnitOfWork _UnitOfWork;
 
         public CourtBusiness()
@@ -140,6 +141,29 @@ namespace BY.Business
                 return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
             }
         }
+
+        public async Task<IBusinessResult> GetTop10Court()
+        {
+            try
+            {
+                var courts = await _UnitOfWork.courtRepository.GetAllAsync();
+                if (courts != null)
+                {
+                    //take 10 courts
+                    var result = courts.OrderByDescending(x => x.CourtId).Take(10).ToList();
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
     }
 }
 
