@@ -19,12 +19,14 @@ namespace BY.Business
         Task<IBusinessResult> Update(Court court);
         Task<IBusinessResult> Delete(int id);
         Task<IBusinessResult> GetTop10Court();
+
     }
 
     public class CourtBusiness : ICourtBusiness
     {
         // private readonly CourtDAO _UnitOfWork.CourtRepository;
         private readonly UnitOfWork _UnitOfWork;
+
 
         public CourtBusiness()
         {

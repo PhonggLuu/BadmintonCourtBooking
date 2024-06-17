@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 
 using BY.Data.DAO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BY.RazorWebApp.Pages.CourtPage
 {
@@ -15,10 +17,10 @@ namespace BY.RazorWebApp.Pages.CourtPage
         public string Message { get; set; } = default;
         [BindProperty]
         public Court Court { get; set; } = default;
-        public List<Court> courts { get; set; } = new List<Court>();
+        public List<Court> Courts { get; set; } = new List<Court>();
         private readonly IWebHostEnvironment _hostingEnvironment;
         private IHostEnvironment _environment;
-        public CourtPageModel(IWebHostEnvironment hostingEnvironment,IHostEnvironment environment)
+        public CourtPageModel(IWebHostEnvironment hostingEnvironment, IHostEnvironment environment)
         {
             _hostingEnvironment = hostingEnvironment;
             _environment = environment;
@@ -30,7 +32,25 @@ namespace BY.RazorWebApp.Pages.CourtPage
         public IFormFile[] FileUploads { get; set; }
         public Court EditedCourt { get; set; }
 
-       
+
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public int PageSize { get; set; } = 10; // Number of records per page
+        public int TotalPages { get; set; }
+        
+        //
+
+
+        [BindProperty]
+        public string SearchName { get; set; } = string.Empty;
+        [BindProperty]
+        public string SearchAddress { get; set; } = string.Empty;
+        [BindProperty]
+        public string SearchSurfaceType { get; set; } = string.Empty;
+        [BindProperty]
+        public string SearchType { get; set; } = string.Empty;
+        //
+
         public async Task<IActionResult> OnGetEditAsync(int id)
         {
             var result = await _courtBusiness.GetById(id);
@@ -45,16 +65,74 @@ namespace BY.RazorWebApp.Pages.CourtPage
             }
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int currentPage = 1, string searchName = "", string searchAddress = "", string searchSurfaceType = "", string searchType = "")
         {
-            var result = await _courtBusiness.GetAllCourt();
-            if (result.Status > 0 && result.Data != null)
+            CurrentPage = currentPage;
+            SearchName = searchName;
+            SearchAddress = searchAddress;
+            SearchSurfaceType = searchSurfaceType;
+            SearchType = searchType;
+           
+            var courtResult = await _courtBusiness.GetAllCourt();
+            if (courtResult.Status > 0 && courtResult.Data != null)
             {
-                courts = (List<Court>)result.Data;
+                var courts = (List<Court>)courtResult.Data;
+                if (!string.IsNullOrEmpty(SearchName))
+                {
+                    courts = courts.Where(c =>
+                        (c.Name?.ToLower().StartsWith(SearchName.ToLower()) ?? false) ||
+                        (c.Name?.ToLower().Contains(" " + SearchName.ToLower()) ?? false)
+                    ).ToList();
+                }
+                if (!string.IsNullOrEmpty(SearchAddress))
+                {
+                    courts = courts.Where(c =>
+                        (c.Address?.ToLower().StartsWith(SearchAddress.ToLower()) ?? false) ||
+                        (c.Address?.ToLower().Contains(" " + SearchAddress.ToLower()) ?? false)
+                    ).ToList();
+                }
+                if (!string.IsNullOrEmpty(SearchSurfaceType))
+                {
+                    courts = courts.Where(c =>
+                                            (c.SurfaceType?.ToLower().StartsWith(SearchSurfaceType.ToLower()) ?? false) ||
+                                            (c.SurfaceType?.ToLower().Contains(" " + SearchSurfaceType.ToLower()) ?? false)
+                                        ).ToList();
+                }
+                if (!string.IsNullOrEmpty(SearchType))
+                {
+                    courts = courts.Where(c =>
+                        (c.Type?.ToLower().StartsWith(SearchType.ToLower()) ?? false) ||
+                        (c.Type?.ToLower().Contains(" " + SearchType.ToLower()) ?? false)
+                    ).ToList();
+                }
+
+                int totalCount = courts.Count;
+                TotalPages = (int)System.Math.Ceiling(totalCount / (double)PageSize);
+
+                Courts = courts
+                    .Skip((CurrentPage - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+
             }
         }
 
-        // Save the court data when the form is submitted
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var result = await _courtBusiness.Delete(id);
+            if (result.Status > 0)
+            {
+                Message = result.Message;
+            }
+            else
+            {
+                Message = "Error: " + result.Message;
+            }
+
+            return RedirectToPage(new { currentPage = CurrentPage, searchName = SearchName, searchAddress = SearchAddress, searchSurfaceType = SearchSurfaceType, searchType = SearchType });
+        }
+
+
         public async Task<IActionResult> OnPostAsync()
         {
             /*     var check = _environment.ContentRootPath;
@@ -76,30 +154,30 @@ namespace BY.RazorWebApp.Pages.CourtPage
                      }
                  }
                */
-            if (CourtViewModel.ImageFile != null)
-            {
-                // Generate a unique filename
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
-                var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
+            /*            if (CourtViewModel.ImageFile != null)
+                        {
+                            // Generate a unique filename
+                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
+                            var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
 
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
+                            if (!Directory.Exists(uploadsFolder))
+                            {
+                                Directory.CreateDirectory(uploadsFolder);
+                            }
 
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await CourtViewModel.ImageFile.CopyToAsync(fileStream);
-                }
+                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await CourtViewModel.ImageFile.CopyToAsync(fileStream);
+                            }
 
-                // Save the image filename in the Court model
-                CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
-            }
+                            // Save the image filename in the Court model
+                            CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
+                        }*/
 
 
-            var result = await _courtBusiness.Save(Court);
+            var result = await _courtBusiness.Save(CourtViewModel.Court);
             if (result.Status > 0)
             {
                 Message = result.Message;
@@ -113,7 +191,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
         }
 
         // Handle the delete action
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
+/*        public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             var result = await _courtBusiness.Delete(id);
             if (result.Status > 0)
@@ -127,7 +205,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
             return RedirectToPage();
         }
-
+*/
         // Handle the edit action
 
 
