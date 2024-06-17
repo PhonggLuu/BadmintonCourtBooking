@@ -20,8 +20,10 @@ namespace BY.RazorWebApp.Pages.SchedulePage
         public Schedule Schedule { get; set; } = default!;
         [BindProperty]
         public List<Court>? Courts { get; set; } = new List<Court>();
-        public string Event { get; set; } = string.Empty;
-        public string StaffCheck { get; set; } = string.Empty;
+        [BindProperty(SupportsGet = true)]
+        public string? Event { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? StaffCheck { get; set; }
         public int TotalCount { get; set; } = 0;
         public int PageTotal { get; set; } = 0;
         public int CurrentPage { get; set; } = 0;
@@ -52,8 +54,6 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             var scheduleResult = await _scheduleBusiness.GetAllSchedule();
             if (scheduleResult != null && scheduleResult.Status == 1)
             {
-                Event = Request.Query["eventSearch"];
-                StaffCheck = Request.Query["staffSearch"];
                 Schedules = scheduleResult.Data as List<Schedule>;
                 if (!int.TryParse(Request.Query["page"], out int page))
                 {

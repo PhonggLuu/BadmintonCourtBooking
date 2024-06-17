@@ -22,12 +22,12 @@
   <input type="hidden" name="pagesize" value="10" />
   <div class="d-flex w-100">
     <div class="input-group w-25 me-5" style="align-items: center">
-      <label class="control-label me-2">Event</label>
-      <input name="eventSearch" placeholder="Event" value="@(Model.Event)" type="text" class="form-control" />
+      <label asp-for="@Model.Event" as class="control-label me-2"></label>
+      <input asp-for="@Model.Event" placeholder="Event" value="@Model.Event" type="text" class="form-control" />
     </div>
     <div class="input-group w-25 me-5" style="align-items: center">
-      <label class="control-label me-2">Staff</label>
-      <input name="staffSearch" value="@(Model.StaffCheck)" placeholder="StaffCheck" type="text" class="form-control" />
+      <label asp-for="@Model.StaffCheck" class="control-label me-2"></label>
+      <input asp-for="@Model.StaffCheck" value="@Model.StaffCheck" placeholder="StaffCheck" type="text" class="form-control" />
     </div>
     <div class="input-group-append">
       <button type="submit" id="search" class="input-group-text h-100 btn-danger" style="cursor: pointer;">
