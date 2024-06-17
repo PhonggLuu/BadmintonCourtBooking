@@ -158,21 +158,5 @@ namespace MyApp.Namespace
             }
             return false;
         }
-
-        public  IActionResult OnGetAmounTicket()
-        {
-            string sessionCart = HttpContext.Session.GetString("cart");
-            List<Cart>? carts = new List<Cart>();
-            if (!string.IsNullOrEmpty(sessionCart))
-            {
-                carts = JsonConvert.DeserializeObject<List<Cart>>(HttpContext.Session.GetString("cart"));
-            }
-            var jsonOptions = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
-            var jsonResult = System.Text.Json.JsonSerializer.Serialize(carts.Count, jsonOptions);
-            return Content(jsonResult, "application/json");
-        }
     }
 }

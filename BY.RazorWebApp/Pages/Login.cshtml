@@ -1,0 +1,54 @@
+﻿@page
+@model MyApp.Namespace.LoginModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BY.RazorWebApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+    <div
+        class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="card auth-card mb-0 mx-3" style="width: 350px;">
+                <div class="card-body">
+                    <a href="./Index" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                        <img src="~/image/badminton-logo.png" width="180" alt="logo">
+                    </a>
+                    <p class="fw-bold fs-5 text-center">Badminton Yard</p>
+                    @if (string.IsNullOrEmpty(Model.Error) == false)
+                    {
+                        <div class="alert alert-danger">
+                            @Model.Error
+                        </div>
+                    }
+                    <form method="post" class="mt-4">
+                        <div class="mb-3">
+                            <label asp-for="@Model.Username" class="control-label"></label>
+                            <input asp-for="@Model.Username" type="text" class="form-control"/>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="@Model.Password" class="control-label"></label>
+                            <input asp-for="@Model.Password" type="password" class="form-control"/>
+                        </div>
+                        <button type="submit"  class="btn btn-primary w-100 fs-4 mb-4">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</html>

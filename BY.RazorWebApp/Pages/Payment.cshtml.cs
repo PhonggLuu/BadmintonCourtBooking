@@ -33,8 +33,14 @@ namespace MyApp.Namespace
                 carts = JsonConvert.DeserializeObject<List<Cart>>(HttpContext.Session.GetString("cart"));
             }
             Carts = carts;
-        }
 
+            var customerJson = HttpContext.Session.GetString("customer");
+            if (!string.IsNullOrEmpty(customerJson))
+            {
+                var customer = JsonConvert.DeserializeObject<Customer>(customerJson);
+                Customer = customer;
+            }
+        }
         public async Task<IActionResult> OnPost()
         {
             OnGet();
@@ -74,7 +80,7 @@ namespace MyApp.Namespace
                     }
                     HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(carts));
                 }
-            }      
+            }
             return RedirectToPage("/Payment");
         }
     }

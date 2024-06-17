@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using BY.Business
+@using BY.Data.Models
+@using Newtonsoft.Json
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,7 +23,7 @@
                     <a class="navbar-brand" asp-area="" asp-page="/Index">Badminton Yard</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse flex-md-grow-0 collapse d-sm-inline-flex justify-content-between">
@@ -34,30 +37,62 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark position-relative" asp-area="" asp-page="/Payment">
                                 <i class="fa fa-ticket fa-2x" aria-hidden="true"></i>
-                                <div id="cart">
-
-                                </div>
+                                @if (!string.IsNullOrEmpty(Context.Session.GetString("cart")))
+                                {
+                                    var cartJson = Context.Session.GetString("cart");
+                                    if (!string.IsNullOrEmpty(cartJson))
+                                    {
+                                        var carts = JsonConvert.DeserializeObject<List<Cart>>(cartJson);
+                                        if(carts != null && carts.Count > 0)
+                                        {
+                                            <p style="top: 0; right:0; height: 23px; width: 23px;"
+                                               class="bg-danger text-center rounded-circle text-white position-absolute">
+                                                @(carts.Count)
+                                            </p>
+                                        }
+                                    };
+                                }
                             </a>
                         </li>
-                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/BookingPage/Index">Booking</a>
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("customer")))
+                        {
+                            var customerJson = Context.Session.GetString("customer");
+                            if (!string.IsNullOrEmpty(customerJson))
+                            {
+                                var customer = JsonConvert.DeserializeObject<Customer>(customerJson);
+                                <li id="login" class="nav-item position-relative">
+                                    <a class="nav-link text-dark">@customer.Name</a>
+                                    <div id="logout" style="right: 0" class="position-absolute top-13 bg-white shadow-lg px-3">
+                                        <a href="/Logout" class="text-decoration-none">Logout</a>
+                                    </div>
+                                </li>
+                            };
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                            </li>
+                        }
+                        @*                       <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/bookingpage/index">booking</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/CourtPage/CourtPage">Court</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/courtpage/courtpage">court</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/CustomerPage/Customer">Customer</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/customerpage/index">customer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/SchedulePage/SchedulePage">Schedule</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/schedulepage/schedulepage">schedule</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/SchedulePageV2/Index">ScheduleV2</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/schedulepagev2/index">schedulev2</a>
                         </li>
                         <li class="nav-item">
                         <a class="nav-link text-dark" asp-area=""
-                        asp-page="/BookingDetailPage/BookingDetail">BookingDetail</a>
-                        </li> 
+                        asp-page="/bookingdetailpage/bookingdetail">bookingdetail</a>
+                        </li>  *@
                     </ul>
                 </div>
             </div>
@@ -76,7 +111,7 @@
                     <div class="d-flex align-items-center">
                         <img height="70" width="70" src="~/image/badminton-logo.png" alt="logo" />
                         <a style="text-decoration: none; color: black; font-size: 20px; font-weight: bold;" asp-area=""
-                            asp-page="/Index">Badminton Yard</a>
+                           asp-page="/Index">Badminton Yard</a>
                     </div>
                     <p class="mt-3">
                         We don't just provide badminton courts, we create a space for connection, health and joy..
@@ -107,35 +142,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {
-            function onLoadFunction() {
-                console.log("Function onLoadFunction called");
-                $.ajax({
-                    type: "GET",
-                    url: "/CourtDetail?handler=AmounTicket",
-                    success: function (data) {
-                        if (data !== '' && data > 0) {
-                            $("#cart").html(
-                                `
-                                        <p style="top: 0; right:0; height: 23px; width: 23px;"
-                                            class="bg-danger text-center rounded-circle text-white position-absolute">
-                                            ${data}
-                                        </p>
-                                `
-                            )
-                        } else {
-                            $("#cart").html("")
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX Request Failed:', status, error, xhr.responseText);
-                    }
-                });
-            }
-            onLoadFunction();
-        });
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

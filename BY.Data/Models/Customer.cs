@@ -27,5 +27,7 @@ public partial class Customer
 
     public bool IsActive { get; set; }
 
+    public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

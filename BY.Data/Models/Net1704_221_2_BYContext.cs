@@ -18,6 +18,8 @@ public partial class Net1704_221_2_BYContext : DbContext
     {
     }
 
+    public virtual DbSet<Account> Accounts { get; set; }
+
     public virtual DbSet<Booking> Bookings { get; set; }
 
     public virtual DbSet<BookingDetail> BookingDetails { get; set; }
@@ -38,12 +40,33 @@ public partial class Net1704_221_2_BYContext : DbContext
         string connectionString = config.GetConnectionString(connectionStringName);
         return connectionString;
     }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Account>(entity =>
+        {
+            entity.ToTable("Account");
+
+            entity.Property(e => e.AccountId).HasColumnName("AccountID");
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.UserName)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsFixedLength();
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Accounts)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Account_Customer");
+        });
+
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.ToTable("Booking");
@@ -94,12 +117,6 @@ public partial class Net1704_221_2_BYContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.Name).HasMaxLength(200);
-            entity.Property(e => e.SurfaceType)
-                .HasMaxLength(200)
-                .IsFixedLength();
-            entity.Property(e => e.Type)
-                .HasMaxLength(50)
-                .IsFixedLength();
             entity.Property(e => e.SurfaceType)
                 .HasMaxLength(200)
                 .IsFixedLength();
