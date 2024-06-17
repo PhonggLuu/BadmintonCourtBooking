@@ -2,22 +2,23 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BY.Data.Models;
 
 public partial class Schedule
 {
     public int ScheduleId { get; set; }
-
-    public int? CourtId { get; set; }
-
-    public TimeOnly? From { get; set; }
-
-    public TimeOnly? To { get; set; }
-
-    public decimal? Price { get; set; }
-
-    public DateOnly? Date { get; set; }
+    [Required(ErrorMessage = "Chose court")]
+    public int CourtId { get; set; }
+    [Required]
+    public TimeOnly From { get; set; }
+    [Required]
+    public TimeOnly To { get; set; }
+    [Required]
+    public decimal Price { get; set; }
+    [Required]
+    public DateOnly Date { get; set; }
 
     public string Notes { get; set; }
 

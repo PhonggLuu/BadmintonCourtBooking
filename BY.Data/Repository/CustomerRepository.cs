@@ -18,8 +18,5 @@ namespace BY.Data.Repository
             return _context.Customers.Where(x=> x.Email == email && x.Phone == phone).FirstOrDefault();
         }
 
-        public Customer? GetCustomerLatest(){
-            return _context.Customers.OrderByDescending(x => x.CustomerId).FirstOrDefault();
-        }
     }
 }

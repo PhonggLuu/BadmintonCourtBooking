@@ -17,10 +17,16 @@ namespace BY.RazorWebApp.Pages.SchedulePage
 
         public List<Schedule>? Schedules { get; private set; } = new List<Schedule>();
         [BindProperty]
-        public Schedule Schedule { get; set; } = new Schedule();
+        public Schedule Schedule { get; set; } = default!;
         [BindProperty]
         public List<Court>? Courts { get; set; } = new List<Court>();
-        public string Search { get; set; } = string.Empty;
+        public string Event { get; set; } = string.Empty;
+        public string StaffCheck { get; set; } = string.Empty;
+        public int TotalCount { get; set; } = 0;
+        public int PageTotal { get; set; } = 0;
+        public int CurrentPage { get; set; } = 0;
+        public int PageSize { get; set; } = 0;
+
         public async Task OnGetCourtAsync()
         {
             var courtResult = await _courtBusiness.GetAllCourt();
@@ -46,27 +52,47 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             var scheduleResult = await _scheduleBusiness.GetAllSchedule();
             if (scheduleResult != null && scheduleResult.Status == 1)
             {
-                string search = Request.Query["search"];
-                if (string.IsNullOrEmpty(search))
+                Event = Request.Query["eventSearch"];
+                StaffCheck = Request.Query["staffSearch"];
+                Schedules = scheduleResult.Data as List<Schedule>;
+                if (!int.TryParse(Request.Query["page"], out int page))
                 {
-                    Schedules = scheduleResult.Data as List<Schedule>;
+                    page = 1;
                 }
-                else
+                if (!int.TryParse(Request.Query["pagesize"], out int pagesize))
                 {
-                    Search = search;
-                    Schedules = scheduleResult.Data as List<Schedule>;
-                    if (Schedules != null && Schedules.Count > 0)
+                    pagesize = 10;
+                }
+                if (Schedules != null && Schedules.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(StaffCheck))
                     {
-                        Schedules = Schedules.Where(s => (s.StaffCheck != null && s.StaffCheck.ToLower().Contains(search.ToLower().Trim()) || 
-                            s.Event != null && s.Event.ToLower().Contains(search.ToLower().Trim()))).ToList();
+                        Schedules = Schedules.Where(s => (s.StaffCheck != null && s.StaffCheck.ToLower().Contains(StaffCheck.ToLower().Trim()))).ToList();
+                    }
+                    if (!string.IsNullOrEmpty(Event))
+                    {
+                        Schedules = Schedules.Where(s => (s.Event != null && s.Event.ToLower().Contains(Event.ToLower().Trim()))).ToList();
                     }
                 }
+                var query = Schedules as IEnumerable<Schedule>;
+
+                var pagedSchedules = query
+                           .Skip((page - 1) * pagesize)
+                           .Take(pagesize)
+                           .ToList();
+
+                Schedules = pagedSchedules;
+                
+                TotalCount = query.Count();
+                PageTotal = (int)Math.Ceiling(query.Count() / (double)pagesize);
+                CurrentPage = page;
+                PageSize = pagesize;
             }
             else
             {
                 if (scheduleResult != null && scheduleResult.Status == -4)
                 {
-                    Error = scheduleResult?.Message;
+                    Error = "Error system";
                 }
                 else
                 {
