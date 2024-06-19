@@ -15,6 +15,10 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[Account]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Booking]",
          "ObjectType": 0
       },

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BY.Data.Models;
 using BY.Business;
+using Microsoft.Identity.Client;
+using Elfie.Serialization;
+using System.Drawing.Printing;
 
 namespace BY.RazorWebApp.Pages.CustomerPage
 {
@@ -21,9 +24,42 @@ namespace BY.RazorWebApp.Pages.CustomerPage
 
         public IList<Customer> Customers { get; set; } = default!;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchName { get; set; } = default!;
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchAddress { get; set; } = default!;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = default!;
+        public int PageSize { get; } = 5;
+
+        [BindProperty(SupportsGet = true)]
+        public int CountPage { get; set; } = default!;
+
         public async Task OnGetAsync()
         {
             Customers = (await _business.GetAll()).Data as IList<Customer>;
+            if (!string.IsNullOrEmpty(SearchName))
+            {
+                Customers = Customers.Where(c => c.Name.ToLower().Contains(SearchName.ToLower())).ToList();
+            }
+            if (!string.IsNullOrEmpty(SearchAddress))
+            {
+                Customers = Customers.Where(c => c.Address.ToLower().Contains(SearchAddress.ToLower())).ToList();
+            }
+            CountPage = (int)Math.Ceiling((double)Customers.Count / PageSize);
+            if (PageIndex > 1 && PageIndex <= CountPage)
+            {
+                Customers = Customers.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
+            }
+            else
+            {
+                Customers = Customers.Take(PageSize).ToList();
+                PageIndex = CountPage;
+            }    
+            //var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
     }
 }

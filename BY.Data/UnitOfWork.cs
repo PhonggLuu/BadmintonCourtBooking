@@ -11,6 +11,7 @@ namespace BY.Data
         private CustomerRepository _customerRepository;
         private BookingDetailRepository _bookingDetailRepository;
         private CourtRepository _courseRepository;
+        private AccountRepository _accountRepository;
         public UnitOfWork()
         {
 
@@ -56,7 +57,13 @@ namespace BY.Data
                 return _courseRepository ??= new Repository.CourtRepository();
             }
         }
-
+        public  AccountRepository AccountRepository
+        {
+            get
+            {
+                return _accountRepository ??= new Repository.AccountRepository();
+            }
+        }
         ////TO-DO CODE HERE/////////////////
 
         #region Set transaction isolation levels

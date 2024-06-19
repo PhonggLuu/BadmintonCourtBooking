@@ -8,6 +8,13 @@ namespace MyApp.Namespace
 {
     public class PaymentModel : PageModel
     {
+        private readonly IBookingBusiness _bookingBusiness;
+        private readonly IScheduleBusiness _scheduleBusiness;
+        public PaymentModel()
+        {
+            _bookingBusiness = new BookingBusiness();
+            _scheduleBusiness = new ScheduleBusiness();
+        }
         [BindProperty]
         public string? Error { get; set; }
         [BindProperty]
@@ -18,6 +25,7 @@ namespace MyApp.Namespace
         public Customer Customer { get; set; } = new Customer();
         public void OnGet()
         {
+            Success = false;
             string sessionCart = HttpContext.Session.GetString("cart");
             List<Cart>? carts = new List<Cart>();
             if (!string.IsNullOrEmpty(sessionCart))
@@ -25,19 +33,35 @@ namespace MyApp.Namespace
                 carts = JsonConvert.DeserializeObject<List<Cart>>(HttpContext.Session.GetString("cart"));
             }
             Carts = carts;
-        }
 
-        public IActionResult OnPost() {
+            var customerJson = HttpContext.Session.GetString("customer");
+            if (!string.IsNullOrEmpty(customerJson))
+            {
+                var customer = JsonConvert.DeserializeObject<Customer>(customerJson);
+                Customer = customer;
+            }
+        }
+        public async Task<IActionResult> OnPost()
+        {
+            OnGet();
             Customer.Name = Request.Form["name"];
             Customer.Email = Request.Form["email"];
             Customer.Address = Request.Form["address"];
             Customer.Phone = Request.Form["phone"];
-  
-            OnGet();
+            var result = await _bookingBusiness.CreateBookingV2(Carts, Customer);
+            if (result.Status > 0)
+            {
+                Success = true;
+                HttpContext.Session.SetString("cart", "");
+            }
+            else
+            {
+                Error = result.Message;
+            }
             return Page();
         }
 
-        public void OnPostDeleteCart(string cartId)
+        public IActionResult OnPostDeleteCart(string cartId)
         {
             if (int.TryParse(cartId, out int index))
             {
@@ -56,9 +80,8 @@ namespace MyApp.Namespace
                     }
                     HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(carts));
                 }
-                Carts = carts;
             }
-
+            return RedirectToPage("/Payment");
         }
     }
 }

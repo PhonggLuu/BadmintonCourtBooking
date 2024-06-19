@@ -12,76 +12,76 @@
 }
 <h1>@ViewData["Title"]</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Schedule!.ScheduleId" />
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.From" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.From" type="time" class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.From" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.To" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.To" type="time" class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.To" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.CourtId" class="control-label">Court</label>
-                <select asp-for="@Model.Schedule!.CourtId" class="form-control">
-                    <option value="">Select a Court</option>
-                    @if (Model.Courts != null && Model.Courts.Count > 0)
+<form class="row" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.Schedule!.ScheduleId" />
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.From" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.From" type="time" class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.From" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.To" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.To" type="time" class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.To" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.CourtId" class="control-label">Court</label>
+            <select asp-for="@Model.Schedule!.CourtId" class="form-control">
+                <option value="">Select a Court</option>
+                @if (Model.Courts != null && Model.Courts.Count > 0)
+                {
+                    foreach (var court in Model.Courts)
                     {
-                        foreach (var court in Model.Courts)
-                        {
-                            <option value="@court.CourtId">@court.Name</option>
-                        }
+                        <option value="@court.CourtId">@court.Name</option>
                     }
-                </select>
-                <span asp-validation-for="@Model.Schedule!.CourtId" class="text-danger"></span>
-            </div>
+                }
+            </select>
+            <span asp-validation-for="@Model.Schedule!.CourtId" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.Price" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.Price" type="number" class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.Date" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.Date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date"
-                    class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.Notes" class="control-label"></label>
-                <textarea asp-for="@Model.Schedule!.Notes" class="form-control"></textarea>
-                <span asp-validation-for="@Model.Schedule!.Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.StaffCheck" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.StaffCheck" type="text" class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.StaffCheck" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.Event" class="control-label"></label>
-                <input asp-for="@Model.Schedule!.Event" type="text" class="form-control" />
-                <span asp-validation-for="@Model.Schedule!.Event" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Schedule!.IsBooked" class="control-label"></label>
-                <select asp-for="@Model.Schedule!.IsBooked" class="form-control">
-                    <option value="True">True</option>
-                    <option value="False">False</option>
-                </select>
-                <span asp-validation-for="@Model.Schedule!.IsBooked" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.Price" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.Price" type="number" class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.Date" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.Date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date"
+                   class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.Date" class="text-danger"></span>
+        </div>
     </div>
-</div>
+    <div class="col-md-6"> 
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.StaffCheck" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.StaffCheck" type="text" class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.StaffCheck" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.Event" class="control-label"></label>
+            <input asp-for="@Model.Schedule!.Event" type="text" class="form-control" />
+            <span asp-validation-for="@Model.Schedule!.Event" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.IsBooked" class="control-label"></label>
+            <select asp-for="@Model.Schedule!.IsBooked" class="form-control">
+                <option value="True">True</option>
+                <option value="False">False</option>
+            </select>
+            <span asp-validation-for="@Model.Schedule!.IsBooked" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule!.Notes" class="control-label"></label>
+            <textarea rows="3" asp-for="@Model.Schedule!.Notes" class="form-control"></textarea>
+            <span asp-validation-for="@Model.Schedule!.Notes" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group mt-3">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div class="mt-5">
     <a asp-page="./SchedulePage">Back to List</a>

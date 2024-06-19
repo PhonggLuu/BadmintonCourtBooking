@@ -3,64 +3,113 @@
 
 @{
     ViewData["Title"] = "Customer";
+    int size = 0;
 }
 
 <h1>Customer Management</h1>
 
-<p>
-    <a style="float: right;" class="btn btn-primary" asp-page="Create">Create</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th class="card-title text-center">Name</th>
-            <th class="card-title text-center">Email</th>
-            <th class="card-title text-center">Address</th>
-            <th class="card-title text-center">Phone</th>
-            <th class="card-title text-center">Number Slot</th>
-            <th class="card-title text-center">Gender</th>
-            <th class="card-title text-center">Year Of Birth</th>
-            <th class="card-title text-center">Register Date</th>
-            <th class="card-title text-center">Active</th>
-            <th class="card-title text-center">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Customers) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.NumberSlot)
-            </td>
-            <td class="text-center">
-                @(item.Gender ? "Nam" : "Nữ")
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.YearOfBirth)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.RegisterDate)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td class="text-center">
-                <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a class="btn btn-success" asp-page="./Details" asp-route-id="@item.CustomerId">Detail</a> |
-                <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<form id="myForm" method="get">
+    <div class="row text-nowrap">
+        <div class="col-md-11 text-nowrap">
+            <div class="row">
+                <div class="col-md-5">
+                    <input id="name" asp-for="SearchName" class="form-control" value="@Model.SearchName" placeholder="Searching by name"/>
+                </div>
+                <div class="col-md-5">
+                    <input id="address" asp-for="SearchAddress" class="form-control" value="@Model.SearchAddress" placeholder="Searching by address" />
+                </div>
+                <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+		    </div> 
+        </div>
+        <div class="col-md-1">
+            <a style="float: right;" class="btn btn-primary" asp-page="Create">Create</a>
+        </div>
+    </div>
+    <table class="table container-fluid">
+        <thead>
+            <tr>
+                <th class="card-title text-center">Name</th>
+                <th class="card-title text-center">Email</th>
+                <th class="card-title text-center">Address</th>
+                <th class="card-title text-center">Phone</th>
+                <th class="card-title text-center">Number Slot</th>
+                <th class="card-title text-center">Gender</th>
+                <th class="card-title text-center">Year Of Birth</th>
+                <th class="card-title text-center">Register Date</th>
+                <th class="card-title text-center">Active</th>
+                <th class="card-title text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-nowrap">
+    @foreach (var item in Model.Customers) {
+                ++size;
+        @if(size <= Model.PageSize) 
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.NumberSlot)
+                </td>
+                <td class="text-center">
+                    @(item.Gender ? "Nam" : "Nữ")
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.YearOfBirth)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.RegisterDate)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                    <a class="btn btn-success" asp-page="./Details" asp-route-id="@item.CustomerId">Detail</a> |
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <input type="hidden" id="pageIndex" asp-for="@Model.PageIndex" value="@Model.PageIndex" />
+            @foreach (var i in Enumerable.Range(1, Model.CountPage))
+            {
+                <li class="page-item"><button onclick="pagination(@i);" class="page-link">@i</button></li>
+			}
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</form>
+<script>
+    function pagination(i) {
+        document.getElementById('pageIndex').value = i;
+        document.getElementById('myForm').submit();
+    }
+</script>
