@@ -5,68 +5,89 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court Management</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="text-center">
+        <h1 class="display-6">Bookinh khung Management</h1>
+    </div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].CreateDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].PaymentMethod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].PaymentStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].Customer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Booking) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentMethod)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.CustomerId)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.BookingId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.BookingId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.BookingId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-4">
+                <form class="d-flex justify-content-between">
+                    <div class="input-group w-50">
+                        <input type="text" name="SearchName" class="form-control" value="@(Model.SearchName)" placeholder="Search by Name" />
+                        <input type="text" name="SearchCreateDate" class="form-control" value="@(Model.SearchCreateDate)" placeholder="Search Create Date" />
+                        <input type="text" name="SearchStartDate" class="form-control" value="@(Model.SearchStartDate)" placeholder="Search Start Date" />
+                        <input type="text" name="SearchPaymentStatus" class="form-control" value="@(Model.SearchPaymentStatus)" placeholder="Search Payment Status" />
+                        <div class="input-group-append">
+                            <button type="submit" id="search" class="input-group-text h-100 btn-danger" style="cursor: pointer;">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="add();">
+                        Add
+                    </button>
+                </form>
+            </div>
+
+            <div id="example">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr class="card-header">
+                            <th class="card-title text-center">Total Price</th>
+                            <th class="card-title text-center">Status</th>
+                            <th class="card-title text-center">Start Date</th>
+                            <th class="card-title text-center">Create Date</th>
+                            <th class="card-title text-center">Payment Method</th>
+                            <th class="card-title text-center">Payment Status</th>
+                            <th class="card-title text-center">Customer Name</th>
+                            <th class="card-title text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Bookings)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Customer.Name)</td>
+                                <td>
+                                    <a class="btn btn-info" asp-page="./Edit" asp-route-id="@item.BookingId">Edit</a>
+                                    <a class="btn btn-warning" asp-page="./Details" asp-route-id="@item.BookingId">Details</a>
+                                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.BookingId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-page="./Index" asp-route-currentPage="@i" asp-route-searchName="@Model.SearchName" asp-route-searchCreateDate="@Model.SearchCreateDate" asp-route-searchStartDate="@Model.SearchStartDate" asp-route-searchPaymentStatus="@Model.SearchPaymentStatus">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
