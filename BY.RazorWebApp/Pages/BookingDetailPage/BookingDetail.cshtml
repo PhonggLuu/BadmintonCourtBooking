@@ -40,6 +40,12 @@
                             <td>@bookingDetail.Schedule.Date.Value.ToString("yyyy-MM-dd")</td>
                             <td>@bookingDetail.Price</td>
                             <td>@bookingDetail.Amount</td>
+                            <td>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@bookingDetail.BookingDetailId">
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                                <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@bookingDetail.BookingDetailId">Edit</a>
+                            </td>
                         </tr>
                     }
                 }
@@ -68,9 +74,18 @@
                                     <input asp-for="BookingDetail.Price" class="form-control" />
                                 </div>
                                 <div class="col-md-6">
+                                    <label for="1">ScheduleID</label>
+                                    <input asp-for="BookingDetail.ScheduleId" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="1">BookingID</label>
+                                    <input asp-for="BookingDetail.BookingId" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
                                     <label for="1">Amount</label>
                                     <input asp-for="BookingDetail.Amount" class="form-control" />
                                 </div>
+
                             </div>
                         </div>
                     </div>
