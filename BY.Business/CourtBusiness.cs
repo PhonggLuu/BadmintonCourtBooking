@@ -18,7 +18,7 @@ namespace BY.Business
         Task<IBusinessResult> Save(Court court);
         Task<IBusinessResult> Update(Court court);
         Task<IBusinessResult> Delete(int id);
-        Task<IBusinessResult> GetTop10Court();
+        Task<IBusinessResult> GetTop8Court();
     }
 
     public class CourtBusiness : ICourtBusiness
@@ -142,7 +142,7 @@ namespace BY.Business
             }
         }
 
-        public async Task<IBusinessResult> GetTop10Court()
+        public async Task<IBusinessResult> GetTop8Court()
         {
             try
             {
@@ -150,7 +150,7 @@ namespace BY.Business
                 if (courts != null)
                 {
                     //take 10 courts
-                    var result = courts.OrderByDescending(x => x.CourtId).Take(10).ToList();
+                    var result = courts.OrderByDescending(x => x.CourtId).Take(8).ToList();
                     return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
                 }
                 else

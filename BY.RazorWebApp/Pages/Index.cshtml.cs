@@ -18,7 +18,7 @@ namespace BY.RazorWebApp.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var courts = await _courtBusiness.GetTop10Court();
+            var courts = await _courtBusiness.GetTop8Court();
             if (courts.Status > 0 && courts.Data != null)
             {
                 Courts = courts.Data as List<Court>;

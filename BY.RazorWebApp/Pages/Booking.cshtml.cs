@@ -42,7 +42,7 @@ namespace MyApp.Namespace
             }
             if (!int.TryParse(Request.Query["pagesize"], out int pagesize))
             {
-                pagesize = 10;
+                pagesize = 8;
             }
             var result = await _courtBusiness.GetAllCourt();
             if (result != null && result.Status > 0)
