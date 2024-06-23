@@ -19,7 +19,8 @@
                     <input id="address" asp-for="SearchAddress" class="form-control" value="@Model.SearchAddress" placeholder="Searching by address" />
                 </div>
                 <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a asp-page="./Index" class="btn btn-primary">Clear</a>
                 </div>
 		    </div> 
         </div>
@@ -88,18 +89,39 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+                <a class="page-link" onclick="pagination(@(Model.PageIndex >= 1 ? (Model.PageIndex - 1) : 1));" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">Previous</span>
                 </a>
             </li>
-            <input type="hidden" id="pageIndex" asp-for="@Model.PageIndex" value="@Model.PageIndex" />
-            @foreach (var i in Enumerable.Range(1, Model.CountPage))
+            <input type="hidden" id="pageIndex" asp-for="@Model.PageIndex" value="1" />
+            @if( Model.PageIndex >= 3)
             {
-                <li class="page-item"><button onclick="pagination(@i);" class="page-link">@i</button></li>
-			}
+                if( Model.PageIndex + 2 <= Model.CountPage)
+                {
+                    for (int i = Model.PageIndex - 2; i <= Model.PageIndex + 2; i++)
+					{
+                        <li class="page-item @(Model.PageIndex == i ? "active" : "")"><button onclick="pagination(@i);" class="page-link">@i</button></li>
+                    }
+                }
+                else
+                {
+                    for (int i = (Model.CountPage > 4 ? (Model.CountPage - 4) : 1); i <= Model.CountPage; i++)
+                    {
+                        <li class="page-item @(Model.PageIndex == i ? "active" : "")"><button onclick="pagination(@i);" class="page-link">@i</button></li>
+
+                    }
+                }
+            }
+            else
+            {
+                foreach (var i in Enumerable.Range(1, (Model.CountPage >= 5 ? 5 : Model.CountPage)))
+                {
+                    <li class="page-item @(Model.PageIndex == i ? "active" : "")"><button onclick="pagination(@i);" class="page-link">@i</button></li>
+                }
+            }
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <a class="page-link" onclick="pagination(@(Model.PageIndex < Model.CountPage ? (Model.PageIndex + 1) : Model.CountPage));" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Next</span>
                 </a>
@@ -109,7 +131,9 @@
 </form>
 <script>
     function pagination(i) {
-        document.getElementById('pageIndex').value = i;
-        document.getElementById('myForm').submit();
+        if (i >= 1) {
+            document.getElementById('pageIndex').value = i;
+            document.getElementById('myForm').submit();
+        }
     }
 </script>

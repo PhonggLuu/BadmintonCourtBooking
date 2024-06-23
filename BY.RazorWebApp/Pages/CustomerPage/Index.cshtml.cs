@@ -32,7 +32,7 @@ namespace BY.RazorWebApp.Pages.CustomerPage
         public string SearchAddress { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
-        public int PageIndex { get; set; } = default!;
+        public int PageIndex { get; set; } = 1;
         public int PageSize { get; } = 5;
 
         [BindProperty(SupportsGet = true)]
@@ -50,14 +50,14 @@ namespace BY.RazorWebApp.Pages.CustomerPage
                 Customers = Customers.Where(c => c.Address.ToLower().Contains(SearchAddress.ToLower())).ToList();
             }
             CountPage = (int)Math.Ceiling((double)Customers.Count / PageSize);
-            if (PageIndex > 1 && PageIndex <= CountPage)
+            if (PageIndex >= 1 && PageIndex <= CountPage)
             {
                 Customers = Customers.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
             }
             else
             {
                 Customers = Customers.Take(PageSize).ToList();
-                PageIndex = CountPage;
+                PageIndex = 1;
             }    
             //var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
