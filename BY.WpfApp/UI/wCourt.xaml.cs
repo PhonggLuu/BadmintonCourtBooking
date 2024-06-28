@@ -1,5 +1,6 @@
 ﻿using BY.Business;
 using BY.Data.Models;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,13 +51,10 @@ namespace BY.WpfApp.UI
         {
             try
             {
-                var item = await _courtBusiness.GetById(int.Parse(txtCourtId.Text));
-
-                if (item.Data == null)
+                if ( txtCourtId.Text.IsNullOrEmpty())
                 {
                     var court = new Court()
                     {
-                        CourtId = int.Parse(txtCourtId.Text),
                         Name = txtName.Text,
                         Image = txtImage.Text,
                         Description = txtDescription.Text,
@@ -64,10 +62,11 @@ namespace BY.WpfApp.UI
                     };
 
                     var result = await _courtBusiness.Save(court);
-                    MessageBox.Show(result.Message, "Save");
+                    MessageBox.Show("Create Court successfully", "Save");
                 }
                 else
                 {
+                    var item = await _courtBusiness.GetById(int.Parse(txtCourtId.Text));
                     var court = item.Data as Court;
                     court.CourtId = int.Parse(txtCourtId.Text);
                     court.Name = txtName.Text;
@@ -112,7 +111,7 @@ namespace BY.WpfApp.UI
                 txtName.Text=court.Name.ToString();
                 txtImage.Text = court.Image.ToString();
                 txtDescription.Text = court.Description.ToString();
-                txtIsInUse.IsChecked = court.IsInUse;
+
 
             }
             else
@@ -120,46 +119,32 @@ namespace BY.WpfApp.UI
                 MessageBox.Show("Not Found Court", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-  /*      private void IsInUse_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            if (checkBox != null)
-            {
-                bool isChecked = checkBox.IsChecked ?? false; // Get the checked state
 
-                // Update a ViewModel property 
-                // (Assuming you have a ViewModel with an 'IsInUse' property)
-                if (DataContext is YourViewModel viewModel)
-                {
-                    viewModel.IsInUse = isChecked;
-                }
-            }
-        }*/
         private void grdCourt_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
         }
         private async void grdCourt_ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-          /*  var schedule = grdSchedule.SelectedItem as Schedule;
-            if (schedule != null)
+            var court = grdCourt.SelectedItem as Court;
+            if (court != null)
             {
-                var result = await _scheduleBusiness.DeleteSchedule(schedule);
+                var result = await _courtBusiness.Delete(court.CourtId);
                 if (result != null && result.Status > 0)
                 {
-                    LoadGrdSchedule();
-                    MessageBox.Show("Delete Schedule successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadGrdCourt();
+                    MessageBox.Show("Delete court successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Delete Schedule Fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Delete court Fail", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 }
             }
             else
             {
                 MessageBox.Show("Not Found Schedule", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }*/
+            }
         }
     }
 }

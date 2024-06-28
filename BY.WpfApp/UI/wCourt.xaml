@@ -9,38 +9,35 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Court Form" Margin="10">
-                <Grid Height="50">
+                <Grid Height="50" Width="1000">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="120"/> 
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="290"/>
+
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" Content="ID" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBlock Grid.Column="1" Grid.Row="0" x:Name="txtCourtId" Height="25" Margin="5" Width="140" HorizontalAlignment="Left" Text="" />
+                    <Label Grid.Column="0" Grid.Row="0" Content="ID" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" x:Name="txtCourtId" Height="25" Margin="5" Width="100" HorizontalAlignment="Left" Text="" VerticalAlignment="Center" />
 
-                    <Label Grid.Column="2" Grid.Row="0" Content="Name" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="3" Grid.Row="0" x:Name="txtName" Height="25" Margin="5" Width="140" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="Name" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    <TextBox Grid.Column="3" Grid.Row="0" x:Name="txtName" Height="25" Margin="5" Width="180" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                    <Label Grid.Column="4" Grid.Row="0" Content="Image" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="5" Grid.Row="0" x:Name="txtImage" Height="25" Margin="5" Width="140" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="4" Grid.Row="0" Content="Image" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    <TextBox Grid.Column="5" Grid.Row="0" x:Name="txtImage" Height="25" Margin="5" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                    <Label Grid.Column="6" Grid.Row="0" Content="Description" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="7" Grid.Row="0" x:Name="txtDescription" Height="25" Margin="5" Width="140" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="6" Grid.Row="0" Content="Description" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    <TextBox Grid.Column="7" Grid.Row="0" x:Name="txtDescription" Height="25" Margin="5" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                    <Label Grid.Column="8" Grid.Row="0" Content="Is In Use" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <CheckBox Grid.Column="11" Grid.Row="0" x:Name="txtIsInUse" IsChecked="{Binding ElementName=IsInUse, Path=IsInUse}"  Margin="10,18,0,17"  Width="19" HorizontalAlignment="Left" RenderTransformOrigin="0.74,0.921"/>  
-              
+
                 </Grid>
             </GroupBox>
             <StackPanel Height="40" Orientation="Horizontal" HorizontalAlignment="Right">

@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.Extensions.Hosting;
 using BY.Data.DAO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
+
 
 namespace BY.RazorWebApp.Pages.CourtPage
 {
@@ -18,18 +19,19 @@ namespace BY.RazorWebApp.Pages.CourtPage
         [BindProperty]
         public Court Court { get; set; } = default;
         public List<Court> Courts { get; set; } = new List<Court>();
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private IHostEnvironment _environment;
-        public CourtPageModel(IWebHostEnvironment hostingEnvironment, IHostEnvironment environment)
+
+      
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+        public CourtPageModel(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
-            _hostingEnvironment = hostingEnvironment;
-            _environment = environment;
+            _environment = hostingEnvironment;
         }
+       
 
         [BindProperty] // Make it bindable from the form
         public CourtViewModel CourtViewModel { get; set; } = new CourtViewModel();
         [BindProperty]
-        public IFormFile[] FileUploads { get; set; }
+        public IFormFile FileUpload { get; set; }
         public Court EditedCourt { get; set; }
 
 
@@ -135,46 +137,47 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            /*     var check = _environment.ContentRootPath;
+            var check = _environment.ContentRootPath;
 
-                 if (FileUploads != null)
-                 {
-                     try { 
-                     foreach(var FileUpload in FileUploads)
-                     {
-                         var file = Path.Combine(_environment.ContentRootPath, "Images", FileUpload.FileName);
-                         using(var fileStream = new FileStream(file, FileMode.Create))
-                         {
-                             await FileUpload.CopyToAsync(fileStream);
-                         }
-                     }
-                     }catch(Exception ex)
-                     {
-                         var k = ex.Message;
-                     }
-                 }
-               */
-            /*            if (CourtViewModel.ImageFile != null)
-                        {
-                            // Generate a unique filename
-                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
-                            var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
+            if (FileUpload != null)
+            {
+                try
+                {
 
-                            if (!Directory.Exists(uploadsFolder))
-                            {
-                                Directory.CreateDirectory(uploadsFolder);
-                            }
+                    var file = Path.Combine(_environment.ContentRootPath, "Images", FileUpload.FileName);
+                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    {
+                        await FileUpload.CopyToAsync(fileStream);
+                    }
 
-                            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                }
+                catch (Exception ex)
+                {
+                    var k = ex.Message;
+                }
+            }
 
-                            using (var fileStream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await CourtViewModel.ImageFile.CopyToAsync(fileStream);
-                            }
+  /*          if (CourtViewModel.ImageFile != null)
+            {
+                // Generate a unique filename
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
+                var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
 
-                            // Save the image filename in the Court model
-                            CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
-                        }*/
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await CourtViewModel.ImageFile.CopyToAsync(fileStream);
+                }
+
+                // Save the image filename in the Court model
+                CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
+            }*/
 
 
             var result = await _courtBusiness.Save(CourtViewModel.Court);
@@ -190,23 +193,8 @@ namespace BY.RazorWebApp.Pages.CourtPage
             return RedirectToPage();
         }
 
-        // Handle the delete action
-/*        public async Task<IActionResult> OnPostDeleteAsync(int id)
-        {
-            var result = await _courtBusiness.Delete(id);
-            if (result.Status > 0)
-            {
-                Message = result.Message;
-            }
-            else
-            {
-                Message = "Error: " + result.Message;
-            }
+    
 
-            return RedirectToPage();
-        }
-*/
-        // Handle the edit action
 
 
         // Update court data
@@ -225,17 +213,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
             return RedirectToPage();
         }
 
-        private List<Court> GetCourt()
-        {
-            var courtResult = _courtBusiness.GetAllCourt();
 
-            if (courtResult.Status > 0 && courtResult.Result.Data != null)
-            {
-                var courts = (List<Court>)courtResult.Result.Data;
-                return courts;
-            }
-            return new List<Court>();
-        }
 
     }
 }

@@ -14,6 +14,6 @@ namespace BY.Data.DAO
         public Court Court { get; set; } = new Court();
 
         [BindProperty] // This is now okay since it's a view model
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }
