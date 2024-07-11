@@ -13,18 +13,29 @@ namespace BY.RazorWebApp.Pages.BookingPage
     public class CreateModel : PageModel
     {
         private readonly IBookingBusiness _bookingBusiness;
+        private readonly ICustomerBusiness _customerBusiness;
+
         public CreateModel()
         {
-           _bookingBusiness ??= new BookingBusiness();
+            _bookingBusiness ??= new BookingBusiness();
+            _customerBusiness ??= new CustomerBusiness();
         }
+        [BindProperty]
+        public Booking Booking { get; set; } = new Booking();
+        [BindProperty]
+        public SelectList CustomerNames { get; set; }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var customersResult = await _customerBusiness.GetAll();
+            var customers = customersResult.Data as List<Customer>; // Ensure it's a list
+            if (customers == null)
+            {
+                customers = new List<Customer>();
+            }
+            CustomerNames = new SelectList(customers, "Name", "Name");
             return Page();
         }
-
-        [BindProperty]
-        public Booking Booking { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
