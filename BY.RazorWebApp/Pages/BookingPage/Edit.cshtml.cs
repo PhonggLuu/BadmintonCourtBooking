@@ -14,14 +14,18 @@ namespace BY.RazorWebApp.Pages.BookingPage
     public class EditModel : PageModel
     {
         private readonly IBookingBusiness _bookingBusiness;
-
+        private readonly ICustomerBusiness _customerBusiness;
         public EditModel()
         {
             _bookingBusiness ??= new BookingBusiness();
+            _customerBusiness ??= new CustomerBusiness();
         }
 
         [BindProperty]
-        public Booking Booking { get; set; } = default!;
+        public Booking Booking { get; set; } = new Booking();
+        [BindProperty]
+        public Customer Customer { get; set; } = new Customer();
+        public SelectList CustomerNames { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,17 +34,31 @@ namespace BY.RazorWebApp.Pages.BookingPage
                 return NotFound();
             }
 
-            var booking =  (await _bookingBusiness.GetBookingById(id.Value)).Data as Booking;
+            var booking = (await _bookingBusiness.GetBookingById(id.Value)).Data as Booking;
             if (booking == null)
             {
                 return NotFound();
             }
             Booking = booking;
+
+            // Ensure Booking.Customer is not null
+            if (Booking.Customer == null)
+            {
+                Booking.Customer = new Customer();
+            }
+
+            // Populate CustomerNames with the list of customer names
+            var customersResult = await _customerBusiness.GetAll();
+            var customers = customersResult.Data as List<Customer>; // Ensure it's a list
+            if (customers == null)
+            {
+                customers = new List<Customer>();
+            }
+            CustomerNames = new SelectList(customers, "Name", "Name");
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -48,11 +66,9 @@ namespace BY.RazorWebApp.Pages.BookingPage
                 return Page();
             }
 
-            _bookingBusiness.UpdateBooking(Booking);        
+            _bookingBusiness.UpdateBooking(Booking);
 
             return RedirectToPage("./Index");
         }
-
-       
     }
 }

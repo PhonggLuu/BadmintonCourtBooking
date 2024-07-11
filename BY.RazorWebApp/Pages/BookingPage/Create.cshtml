@@ -16,9 +16,9 @@
             
             <div class="form-group">
                 <label asp-for="Booking.Customer.Name" class="control-label"></label>
-                <input asp-for="Booking.Customer.Name" class="form-control" />
-                <span asp-validation-for="Booking.Customer.Name" class="text-danger"></span>
+                <select asp-for="Booking.Customer.Name" class="form-control" asp-items="Model.CustomerNames"></select>
             </div>
+
             <div class="form-group">
                 <label asp-for="Booking.TotalPrice" class="control-label"></label>
                 <input asp-for="Booking.TotalPrice" class="form-control" />
@@ -61,5 +61,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
