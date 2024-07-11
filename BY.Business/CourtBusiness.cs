@@ -1,12 +1,6 @@
 ﻿using BY.Business.Base;
 using BY.Data.Models;
 using BY.Common;
-using BY.Data.Currency;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BY.Data;
 
 namespace BY.Business

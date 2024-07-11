@@ -2,12 +2,6 @@
 using BY.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using BY.Data.DAO;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace BY.RazorWebApp.Pages.CourtPage
@@ -26,10 +20,6 @@ namespace BY.RazorWebApp.Pages.CourtPage
         {
             _environment = hostingEnvironment;
         }
-
-
-        [BindProperty] // Make it bindable from the form
-        public CourtViewModel CourtViewModel { get; set; } = new CourtViewModel();
 
         [BindProperty]
         public IFormFile FileUpload { get; set; }
@@ -137,18 +127,18 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (CourtViewModel.ImageFile != null)
+            if (FileUpload != null)
             {
                 try
                 {
-                    var fileName = CourtViewModel.ImageFile.FileName.Split('.');
+                    var fileName = FileUpload.FileName.Split('.');
                     var newFileName = $"{fileName[0]}{DateTime.Now.ToString("yyyyMMddHHmmss")}.{fileName[fileName.Length - 1]}";
                     var path = Path.Combine(_environment.ContentRootPath, "wwwroot/image", newFileName);
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
-                        await CourtViewModel.ImageFile.CopyToAsync(fileStream);
+                        await FileUpload.CopyToAsync(fileStream);
                     }
-                    CourtViewModel.Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
+                    Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
                 }
                 catch (Exception ex)
                 {
@@ -156,7 +146,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
                 }
             }
 
-            var result = await _courtBusiness.Save(CourtViewModel.Court);
+            var result = await _courtBusiness.Save(Court);
             if (result.Status > 0)
             {
                 Message = result.Message;
