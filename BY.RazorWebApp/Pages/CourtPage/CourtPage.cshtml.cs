@@ -166,15 +166,18 @@ namespace BY.RazorWebApp.Pages.CourtPage
             {
                 try
                 {
-                    var fileName = Court.Image.Split("/");
-                    var path = Path.Combine(_environment.ContentRootPath, "wwwroot","image", fileName[fileName.Length - 1]);
-                    if (System.IO.File.Exists(path))
+                    if (Court.Image != null)
                     {
-                        System.IO.File.Delete(path);
+                        var oldFileName = Court.Image.Split("/");
+                        var oldPath = Path.Combine(_environment.ContentRootPath, "wwwroot", "image", oldFileName[oldFileName.Length - 1]);
+                        if (System.IO.File.Exists(oldPath))
+                        {
+                            System.IO.File.Delete(oldPath);
+                        }
                     }
-                    fileName = FileUpload.FileName.Split('.');
+                    var fileName = FileUpload.FileName.Split('.');
                     var newFileName = $"{fileName[0]}{DateTime.Now.ToString("yyyyMMddHHmmss")}.{fileName[fileName.Length - 1]}";
-                    path = Path.Combine(_environment.ContentRootPath, "wwwroot/image", newFileName);
+                    var path = Path.Combine(_environment.ContentRootPath, "wwwroot/image", newFileName);
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
                         await FileUpload.CopyToAsync(fileStream);

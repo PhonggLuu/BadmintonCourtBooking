@@ -34,7 +34,7 @@ namespace BY.RazorWebApp.Pages.BookingPage
             {
                 customers = new List<Customer>();
             }
-            CustomerNames = new SelectList(customers, "Name", "Name");
+            CustomerNames = new SelectList(customers, "CustomerId", "Name");
             return Page();
         }
 
