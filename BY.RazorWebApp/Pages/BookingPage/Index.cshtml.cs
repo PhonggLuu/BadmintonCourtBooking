@@ -25,10 +25,7 @@ namespace BY.RazorWebApp.Pages.BookingPage
 
         public IList<Booking> Bookings { get; set; } = new List<Booking>();
 
-        [BindProperty]
-        public string SearchStartDate { get; set; } = string.Empty;
-        [BindProperty]
-        public string SearchCreateDate { get; set; } = string.Empty;
+        
         [BindProperty]
         public string SearchName { get; set; } = string.Empty;
         [BindProperty]
@@ -38,8 +35,7 @@ namespace BY.RazorWebApp.Pages.BookingPage
         {
             CurrentPage = currentPage;
             SearchName = searchName;
-            SearchCreateDate = searchCreateDate;
-            SearchStartDate = searchStartDate;
+            
             SearchPaymentStatus = searchPaymentStatus;
 
             var bookingResult = await _bookingBusiness.GetALlBooking();
@@ -54,18 +50,7 @@ namespace BY.RazorWebApp.Pages.BookingPage
                         (b.Customer?.Name?.ToLower().Contains(" " + SearchName.ToLower()) ?? false)
                     ).ToList();
                 }
-                if (!string.IsNullOrEmpty(SearchCreateDate))
-                {
-                    bookings = bookings.Where(b =>
-                        b.CreateDate.HasValue && b.CreateDate.Value.ToString("dd-MM-yyyy").StartsWith(SearchCreateDate)
-                    ).ToList();
-                }
-                if (!string.IsNullOrEmpty(SearchStartDate))
-                {
-                    bookings = bookings.Where(b =>
-                        b.StartDate.HasValue && b.StartDate.Value.ToString("dd-MM-yyyy").StartsWith(SearchStartDate)
-                    ).ToList();
-                }
+                
                 if (!string.IsNullOrEmpty(SearchPaymentStatus))
                 {
                     bookings = bookings.Where(b =>
