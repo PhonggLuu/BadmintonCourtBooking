@@ -150,7 +150,7 @@ namespace BY.Business
                 var courts = await _UnitOfWork.courtRepository.GetAllAsync();
                 if (courts != null)
                 {
-                    //take 10 courts
+                    //take 8 courts
                     var result = courts.OrderByDescending(x => x.CourtId).Take(8).ToList();
                     return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, result);
                 }
