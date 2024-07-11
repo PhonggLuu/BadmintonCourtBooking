@@ -22,7 +22,7 @@ namespace BY.Data.Repository
             foreach (var schedule in schedules){
                 if(schedule.From != null)
                 {
-                    times.Add(schedule.From.Value.ToString("HH:mm"));
+                    times.Add(schedule.From.ToString("HH:mm"));
                 }
             }
             return times;
@@ -34,9 +34,6 @@ namespace BY.Data.Repository
                                                     && s.From == timePlay).FirstOrDefault();
             return schedule != null;
         }
-           
-
-        public  Schedule GetScheduleLastest() =>  _context.Schedules.OrderByDescending(x => x.ScheduleId).FirstOrDefault();
-        
+               
     }
 }

@@ -15,8 +15,5 @@ namespace BY.Data.Repository
         }
           public BookingRepository(Net1704_221_2_BYContext unitOfWorkContext) => _context = unitOfWorkContext;
 
-        public Booking ? GetBookingLatest() {
-            return _context.Bookings.OrderByDescending(x=> x.BookingId).FirstOrDefault();
-        }
     }
 }

@@ -2,7 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSession();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromHours(12);
+    options.Cookie.Name = ".BadmintonYard.Session";
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

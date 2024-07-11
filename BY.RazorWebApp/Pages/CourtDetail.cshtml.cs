@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Xml.Schema;
 
 namespace MyApp.Namespace
 {
@@ -116,6 +117,13 @@ namespace MyApp.Namespace
                 { "20:00", new TimeOnly(20,00) },
                 { "21:00", new TimeOnly(21,00) },
             };
+            if(datePlay == DateOnly.FromDateTime(DateTime.Now)){
+                foreach(var time in timeValue.Keys){
+                    if(timeValue[time].Hour <= TimeOnly.FromDateTime(DateTime.Now).Hour){
+                        timeValue.Remove(time);
+                    }
+                }
+            }
             var jsonOptions = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
