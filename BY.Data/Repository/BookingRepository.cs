@@ -20,10 +20,6 @@ namespace BY.Data.Repository
         {
             return await _context.Set<Booking>().Include(c=>c.Customer).ToListAsync();
         }
-
-        public async Task<List<Booking>> GetAllAsync()
-        {
-            return await _context.Set<Booking>().Include(c=>c.Customer).ToListAsync();
-        }
+        
     }
 }
