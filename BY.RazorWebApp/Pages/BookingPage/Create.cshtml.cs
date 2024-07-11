@@ -20,9 +20,10 @@ namespace BY.RazorWebApp.Pages.BookingPage
             _bookingBusiness ??= new BookingBusiness();
             _customerBusiness ??= new CustomerBusiness();
         }
+
         [BindProperty]
         public Booking Booking { get; set; } = new Booking();
-        [BindProperty]
+
         public SelectList CustomerNames { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -44,15 +45,13 @@ namespace BY.RazorWebApp.Pages.BookingPage
             {
                 return Page();
             }
-            var result = _bookingBusiness.CreateBooking(Booking);
+
+            var result = await _bookingBusiness.CreateBooking(Booking);
             if (result == null)
             {
                 return Page();
             }
-            else
-            {
-                return RedirectToPage("./Index");
-            }
+            return RedirectToPage("./Index");
         }
     }
 }
