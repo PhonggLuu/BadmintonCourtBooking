@@ -101,6 +101,9 @@ namespace BY.RazorWebApp.Pages.CourtPage
                 int totalCount = courts.Count;
                 TotalPages = (int)System.Math.Ceiling(totalCount / (double)PageSize);
 
+                CurrentPage = CurrentPage > TotalPages ? TotalPages : CurrentPage;
+                CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
+
                 Courts = courts
                     .Skip((CurrentPage - 1) * PageSize)
                     .Take(PageSize)
@@ -114,11 +117,11 @@ namespace BY.RazorWebApp.Pages.CourtPage
             var result = await _courtBusiness.Delete(id);
             if (result.Status > 0)
             {
-                Message = result.Message;
+                TempData["StatusMessage"] = result.Message;
             }
             else
             {
-                Message = "Error: " + result.Message;
+                TempData["StatusMessage"] = "Error: " + result.Message;
             }
 
             return RedirectToPage(new { currentPage = CurrentPage, searchName = SearchName, searchAddress = SearchAddress, searchSurfaceType = SearchSurfaceType, searchType = SearchType });
@@ -127,9 +130,9 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (FileUpload != null)
-            {
                 try
+            {
+                if (FileUpload != null)
                 {
                     var fileName = FileUpload.FileName.Split('.');
                     var newFileName = $"{fileName[0]}{DateTime.Now.ToString("yyyyMMddHHmmss")}.{fileName[fileName.Length - 1]}";
@@ -140,21 +143,23 @@ namespace BY.RazorWebApp.Pages.CourtPage
                     }
                     Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
                 }
+                    var result = await _courtBusiness.Save(Court);
+                    if (result.Status > 0)
+                    {
+                        TempData["StatusMessage"] = result.Message;
+                    }
+                    else
+                    {
+                        TempData["StatusMessage"] = "Error: " + result.Message;
+                    }
+                }
                 catch (Exception ex)
                 {
-                    var k = ex.Message;
+                    TempData["StatusMessage"] = ex.Message;
                 }
-            }
+            
 
-            var result = await _courtBusiness.Save(Court);
-            if (result.Status > 0)
-            {
-                Message = result.Message;
-            }
-            else
-            {
-                Message = "Error: " + result.Message;
-            }
+          
 
             return RedirectToPage();
         }
@@ -162,9 +167,10 @@ namespace BY.RazorWebApp.Pages.CourtPage
         // Update court data
         public async Task<IActionResult> OnPostEditAsync()
         {
-            if (FileUpload != null)
-            {
+            
                 try
+                {
+                if (FileUpload != null)
                 {
                     if (Court.Image != null)
                     {
@@ -184,21 +190,23 @@ namespace BY.RazorWebApp.Pages.CourtPage
                     }
                     Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
                 }
+                    var result = await _courtBusiness.Update(Court);
+                    if (result != null)
+                    {
+                        TempData["StatusMessage"] = result.Message;
+                    }
+                    else
+                    {
+                        TempData["StatusMessage"] = "Error: " + result.Message;
+                    }
+
+                }
                 catch (Exception ex)
                 {
-                    var k = ex.Message;
+                    TempData["StatusMessage"] = ex.Message;
                 }
-            }
-            var result = await _courtBusiness.Update(Court);
-            if (result != null)
-            {
-                Message = result.Message;
-            }
-            else
-            {
-                Message = "Error: " + result.Message;
-            }
-
+            
+           
             return RedirectToPage();
         }
 

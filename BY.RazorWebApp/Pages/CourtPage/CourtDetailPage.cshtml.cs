@@ -11,11 +11,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
     {
         private readonly ICourtBusiness _businessResult;
 
-        // Constructor with dependency injection
-    /*    public CourtDetailPageModel(ICourtBusiness businessResult)
-        {
-            _businessResult = businessResult;
-        }*/
+
         public CourtDetailPageModel()
         {
             _businessResult = new CourtBusiness();
@@ -36,17 +32,6 @@ namespace BY.RazorWebApp.Pages.CourtPage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int id)
-        {
-            var result = await LoadCourtDetailsAsync(id);
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            Court = result;
-            return Page();
-        }
 
         private async Task<Court> LoadCourtDetailsAsync(int id)
         {

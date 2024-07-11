@@ -16,7 +16,9 @@
     <div class="text-center">
         <h1 class="display-6">Court Management</h1>
     </div>
-
+    <div class="form-group">
+        <label>@TempData["StatusMessage"]</label>
+    </div>
     <div class="row">
         <div class="col-md-12">
 
@@ -51,6 +53,7 @@
                             <th class="card-title text-center">Type</th>
                             <th class="card-title text-center">Color</th>
                             <th class="card-title text-center">Surface Type</th>
+                            <th class="card-title text-center">Area</th>
                             <th class="card-title text-center">Address</th>
                             <th class="card-title text-center">Action</th>
                         </tr>
@@ -69,6 +72,7 @@
                                     <td>@court.Type</td>
                                     <td>@court.Color</td>
                                     <td>@court.SurfaceType</td>
+                                    <td>@court.Area</td>
                                     <td>@court.Address</td>
                                     <td>
                                         <div class="btn-group" role="group">
@@ -90,14 +94,27 @@
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-page="./CourtPage" asp-route-currentPage="@(Model.CurrentPage - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
                         @for (int i = 1; i <= Model.TotalPages; i++)
                         {
                             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                                 <a class="page-link" asp-page="./CourtPage" asp-route-currentPage="@i" asp-route-searchName="@Model.SearchName" asp-route-searchAddress="@Model.SearchAddress" asp-route-searchSurfaceType="@Model.SearchSurfaceType" asp-route-searchType="@Model.SearchType">@i</a>
                             </li>
                         }
+
+                        <li class="page-item @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" asp-page="./CourtPage" asp-route-currentPage="@(Model.CurrentPage + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     </div>
@@ -120,14 +137,7 @@
                             <label for="CourtName">Name</label>
                             <input asp-for="Court.Name" class="form-control" id="CourtName" required />
                         </div>
-                        <input type="hidden" asp-for="Court.Image" class="form-control" id="Image" required />
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label for="customFile">Image</label>
-                                <input type="file" class="form-control" id="customFile" asp-for="FileUpload" accept=".jpg, .png" onchange="previewImage2(event)" />
-                                <img id="imagePreview2" src="" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
-                            </div>
-                        </div>
+                      
                         <div class="form-group">
                             <label for="CourtDescription">Description</label>
                             <input asp-for="Court.Description" class="form-control" id="CourtDescription" required />
@@ -147,13 +157,22 @@
                             <label for="CourtSurfaceType">Surface Type</label>
                             <input asp-for="Court.SurfaceType" class="form-control" id="CourtSurfaceType" required />
                         </div>
+                        <div class="form-group">
+                            <label for="CourtArea">Area</label>
+                            <input asp-for="Court.Area" class="form-control" id="CourtArea" required />
+                        </div>
                         <!---->
                         <div class="form-group">
                             <label for="CourtAddress">Address</label>
                             <input asp-for="Court.Address" class="form-control" id="CourtAddress" required />
                         </div>
+                        <input type="hidden" asp-for="Court.Image" class="form-control" id="Image" required />
                         <div class="form-group">
-                            <label>@Model.Message</label>
+                            <div class="col-md-6">
+                                <label for="customFile">Image</label>
+                                <input type="file" class="form-control" id="customFile" asp-for="FileUpload" accept=".jpg, .png" onchange="previewImage2(event)" />
+                                <img id="imagePreview2" src="" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -219,14 +238,23 @@
                                 <div class="col-md-12">
                                     <div class="form-group row">
                                         <div class="col-md-6">
+                                            <label for="courtArea">Area</label>
+                                            <input asp-for="Court.Area" class="form-control" id="courtArea" required />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="hidden" asp-for="Court.IsInUse" value="false" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-8">
                                             <label for="customFile">Image</label>
                                             <input type="file" class="form-control" id="customFile" asp-for="FileUpload" accept=".jpg, .png" onchange="previewImage(event)" />
                                             <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <input type="hidden" asp-for="Court.IsInUse" value="false" />
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="col-md-12" id="toastContainer">
@@ -286,6 +314,7 @@
                     document.getElementById('CourtSurfaceType').value = data.surfaceType;
                     document.getElementById('CourtAddress').value = data.address;
                     document.getElementById('CourtDescription').value = data.description;
+                    document.getElementById('CourtArea').value = data.area;
                 });
         }
         //function show image when chose file
@@ -309,27 +338,7 @@
             }
             reader.readAsDataURL(event.target.files[0]);
         }
-        //
-        function showToast(message, type) {
-            $('#toastMessage').text(message); // Cập nhật nội dung thông báo
 
-            // Thay đổi kiểu dáng Toast tùy thuộc vào loại thông báo
-            $('#messageToast').removeClass('text-bg-primary text-bg-success text-bg-danger');
-            if (type === 'success') {
-                $('#messageToast').addClass('text-bg-success');
-            } else if (type === 'error') {
-                $('#messageToast').addClass('text-bg-danger');
-            } else {
-                $('#messageToast').addClass('text-bg-primary');
-            }
-
-            var messageToast = new bootstrap.Toast($('#messageToast'));
-            messageToast.show();
-            setTimeout(function () {
-                messageToast.hide();
-            }, 5000);
-        }
-        //
 
         function applyFilters() {
             var name = document.getElementById('searchName').value;
