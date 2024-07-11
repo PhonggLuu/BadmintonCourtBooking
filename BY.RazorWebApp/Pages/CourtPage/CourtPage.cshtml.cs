@@ -21,8 +21,8 @@ namespace BY.RazorWebApp.Pages.CourtPage
         public List<Court> Courts { get; set; } = new List<Court>();
 
 
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
-        public CourtPageModel(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+        private readonly IHostEnvironment _environment;
+        public CourtPageModel(IHostEnvironment hostingEnvironment)
         {
             _environment = hostingEnvironment;
         }
@@ -30,10 +30,10 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         [BindProperty] // Make it bindable from the form
         public CourtViewModel CourtViewModel { get; set; } = new CourtViewModel();
+
         [BindProperty]
         public IFormFile FileUpload { get; set; }
         public Court EditedCourt { get; set; }
-
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
@@ -137,48 +137,24 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var check = _environment.ContentRootPath;
-
-            if (FileUpload != null)
+            if (CourtViewModel.ImageFile != null)
             {
                 try
                 {
-
-                    var file = Path.Combine(_environment.ContentRootPath, "Images", FileUpload.FileName);
-                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    var fileName = CourtViewModel.ImageFile.FileName.Split('.');
+                    var newFileName = $"{fileName[0]}{DateTime.Now.ToString("yyyyMMddHHmmss")}.{fileName[fileName.Length - 1]}";
+                    var path = Path.Combine(_environment.ContentRootPath, "wwwroot/image", newFileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
                     {
-                        await FileUpload.CopyToAsync(fileStream);
+                        await CourtViewModel.ImageFile.CopyToAsync(fileStream);
                     }
-
+                    CourtViewModel.Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
                 }
                 catch (Exception ex)
                 {
                     var k = ex.Message;
                 }
             }
-
-            /*          if (CourtViewModel.ImageFile != null)
-                      {
-                          // Generate a unique filename
-                          var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
-                          var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
-
-                          if (!Directory.Exists(uploadsFolder))
-                          {
-                              Directory.CreateDirectory(uploadsFolder);
-                          }
-
-                          var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                          using (var fileStream = new FileStream(filePath, FileMode.Create))
-                          {
-                              await CourtViewModel.ImageFile.CopyToAsync(fileStream);
-                          }
-
-                          // Save the image filename in the Court model
-                          CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
-                      }*/
-
 
             var result = await _courtBusiness.Save(CourtViewModel.Court);
             if (result.Status > 0)
@@ -193,13 +169,33 @@ namespace BY.RazorWebApp.Pages.CourtPage
             return RedirectToPage();
         }
 
-
-
-
-
         // Update court data
         public async Task<IActionResult> OnPostEditAsync()
         {
+            if (FileUpload != null)
+            {
+                try
+                {
+                    var fileName = Court.Image.Split("/");
+                    var path = Path.Combine(_environment.ContentRootPath, "wwwroot","image", fileName[fileName.Length - 1]);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    fileName = FileUpload.FileName.Split('.');
+                    var newFileName = $"{fileName[0]}{DateTime.Now.ToString("yyyyMMddHHmmss")}.{fileName[fileName.Length - 1]}";
+                    path = Path.Combine(_environment.ContentRootPath, "wwwroot/image", newFileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await FileUpload.CopyToAsync(fileStream);
+                    }
+                    Court.Image = $"{Request.Scheme}://{Request.Host}/image/{newFileName}";
+                }
+                catch (Exception ex)
+                {
+                    var k = ex.Message;
+                }
+            }
             var result = await _courtBusiness.Update(Court);
             if (result != null)
             {
