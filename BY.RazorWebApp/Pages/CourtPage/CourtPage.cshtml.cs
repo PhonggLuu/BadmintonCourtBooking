@@ -2,10 +2,12 @@
 using BY.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using BY.Data.DAO;
-using System;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace BY.RazorWebApp.Pages.CourtPage
@@ -18,16 +20,18 @@ namespace BY.RazorWebApp.Pages.CourtPage
         public Court Court { get; set; } = default;
         public List<Court> Courts { get; set; } = new List<Court>();
 
-      
-        private readonly IHostEnvironment _environment;
-        public CourtPageModel(IHostEnvironment environment)
+
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+        public CourtPageModel(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
-            _environment = environment;
+            _environment = hostingEnvironment;
         }
-       
+
 
         [BindProperty] // Make it bindable from the form
         public CourtViewModel CourtViewModel { get; set; } = new CourtViewModel();
+        [BindProperty]
+        public IFormFile FileUpload { get; set; }
         public Court EditedCourt { get; set; }
 
 
@@ -35,7 +39,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 10; // Number of records per page
         public int TotalPages { get; set; }
-        
+
         //
 
 
@@ -70,7 +74,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
             SearchAddress = searchAddress;
             SearchSurfaceType = searchSurfaceType;
             SearchType = searchType;
-           
+
             var courtResult = await _courtBusiness.GetAllCourt();
             if (courtResult.Status > 0 && courtResult.Data != null)
             {
@@ -133,24 +137,49 @@ namespace BY.RazorWebApp.Pages.CourtPage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var check = _environment.ContentRootPath;
 
-            if (CourtViewModel.ImageFile != null)
+            if (FileUpload != null)
             {
                 try
                 {
 
-                    var file = Path.Combine(_environment.ContentRootPath, "wwwroot/image", $"{CourtViewModel.ImageFile.FileName}{DateTime.Now.ToString("yyyyMMddHHmmss")}");
+                    var file = Path.Combine(_environment.ContentRootPath, "Images", FileUpload.FileName);
                     using (var fileStream = new FileStream(file, FileMode.Create))
                     {
-                        await CourtViewModel.ImageFile.CopyToAsync(fileStream);
+                        await FileUpload.CopyToAsync(fileStream);
                     }
-                    CourtViewModel.Court.Image = $"{Request.Scheme}://{Request.Host}/image/{CourtViewModel.ImageFile.FileName}"; 
+
                 }
                 catch (Exception ex)
                 {
                     var k = ex.Message;
                 }
             }
+
+            /*          if (CourtViewModel.ImageFile != null)
+                      {
+                          // Generate a unique filename
+                          var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(CourtViewModel.ImageFile.FileName);
+                          var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
+
+                          if (!Directory.Exists(uploadsFolder))
+                          {
+                              Directory.CreateDirectory(uploadsFolder);
+                          }
+
+                          var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                          using (var fileStream = new FileStream(filePath, FileMode.Create))
+                          {
+                              await CourtViewModel.ImageFile.CopyToAsync(fileStream);
+                          }
+
+                          // Save the image filename in the Court model
+                          CourtViewModel.Court.Image = "~/Images/" + uniqueFileName;
+                      }*/
+
+
             var result = await _courtBusiness.Save(CourtViewModel.Court);
             if (result.Status > 0)
             {
@@ -164,7 +193,7 @@ namespace BY.RazorWebApp.Pages.CourtPage
             return RedirectToPage();
         }
 
-    
+
 
 
 
