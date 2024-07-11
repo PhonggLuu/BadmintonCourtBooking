@@ -17,6 +17,16 @@ public partial class BookingDetail
 
     public decimal? Amount { get; set; }
 
+    public DateTime CheckInDate { get; set; }
+
+    public string? SpecialRequest { get; set; }
+
+    public int GuestQuantity { get; set; }
+
+    public string Description { get; set; }
+
+    public bool? Status { get; set; } = false;
+
     public virtual Booking Booking { get; set; }
 
     public virtual Schedule Schedule { get; set; }

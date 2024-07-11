@@ -41,6 +41,10 @@ namespace BY.RazorWebApp.Pages.CustomerPage
         public async Task OnGetAsync()
         {
             Customers = (await _business.GetAll()).Data as IList<Customer>;
+            if(Customers == null)
+            { 
+                Customers = new List<Customer>();
+            }    
             if (!string.IsNullOrEmpty(SearchName))
             {
                 Customers = Customers.Where(c => c.Name.ToLower().Contains(SearchName.ToLower())).ToList();

@@ -90,10 +90,15 @@ public partial class Net1704_221_2_BYContext : DbContext
             entity.ToTable("BookingDetail");
 
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)").HasColumnName("Amount");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
-            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)").HasColumnName("Price");
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
+            entity.Property(e => e.CheckInDate).HasColumnName("CheckinDate");
+            entity.Property(e => e.SpecialRequest).HasColumnName("SpecialRequest");
+            entity.Property(e => e.GuestQuantity).HasColumnName("GuestQuantity");
+            entity.Property(e => e.Description).HasColumnName("Description");
+            entity.Property(e => e.Status).HasColumnName("Status");
 
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.BookingId)
@@ -129,20 +134,24 @@ public partial class Net1704_221_2_BYContext : DbContext
         {
             entity.ToTable("Customer");
 
-            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID"); 
             entity.Property(e => e.Address)
                 .HasMaxLength(150)
-                .IsFixedLength();
+                .IsFixedLength().HasColumnName("Address");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
-                .IsFixedLength();
+                .IsFixedLength().HasColumnName("Email");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsFixedLength();
+                .IsFixedLength().HasColumnName("Name");
             entity.Property(e => e.Phone)
                 .HasMaxLength(12)
-                .IsFixedLength();
-            entity.Property(e => e.RegisterDate).HasColumnType("datetime");
+                .IsFixedLength().HasColumnName("Phone");
+            entity.Property(e => e.NumberSlot).HasColumnName("NumberSlot");
+            entity.Property(e => e.Gender).HasColumnName("Gender");
+            entity.Property(e => e.YearOfBirth).HasColumnType("date").HasColumnName("YearOfBirth");
+            entity.Property(e => e.RegisterDate).HasColumnType("datetime").HasColumnName("RegisterDate");
+            entity.Property(e => e.IsActive).HasColumnName("IsActive");
         });
 
         modelBuilder.Entity<Schedule>(entity =>
