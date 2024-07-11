@@ -184,11 +184,11 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="courtName">Name</label>
-                                            <input asp-for="CourtViewModel.Court.Name" class="form-control" id="courtName" required />
+                                            <input asp-for="Court.Name" class="form-control" id="courtName" required />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="courtDescription">Description</label>
-                                            <input asp-for="CourtViewModel.Court.Description" class="form-control" id="courtDescription" required />
+                                            <input asp-for="Court.Description" class="form-control" id="courtDescription" required />
                                         </div>
                                     </div>
                                 </div>
@@ -196,11 +196,11 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="courtType">Type</label>
-                                            <input asp-for="CourtViewModel.Court.Type" class="form-control" id="courtType" required />
+                                            <input asp-for="Court.Type" class="form-control" id="courtType" required />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="courtColor">Color</label>
-                                            <input asp-for="CourtViewModel.Court.Color" class="form-control" id="courtColor" required />
+                                            <input asp-for="Court.Color" class="form-control" id="courtColor" required />
                                         </div>
                                     </div>
                                 </div>
@@ -208,11 +208,11 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="courtSurfaceType">Surface Type</label>
-                                            <input asp-for="CourtViewModel.Court.SurfaceType" class="form-control" id="courtSurfaceType" required />
+                                            <input asp-for="Court.SurfaceType" class="form-control" id="courtSurfaceType" required />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="courtAddress">Address</label>
-                                            <input asp-for="CourtViewModel.Court.Address" class="form-control" id="courtAddress" required />
+                                            <input asp-for="Court.Address" class="form-control" id="courtAddress" required />
                                         </div>
                                     </div>
                                 </div>
@@ -220,12 +220,12 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="customFile">Image</label>
-                                            <input type="file" class="form-control" id="customFile" asp-for="CourtViewModel.ImageFile" accept=".jpg, .png" onchange="previewImage(event)" />
+                                            <input type="file" class="form-control" id="customFile" asp-for="FileUpload" accept=".jpg, .png" onchange="previewImage(event)" />
                                             <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="hidden" asp-for="CourtViewModel.Court.IsInUse" value="false" />
+                                        <input type="hidden" asp-for="Court.IsInUse" value="false" />
                                     </div>
                                 </div>
                             </div>

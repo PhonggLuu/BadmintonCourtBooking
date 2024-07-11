@@ -1,5 +1,6 @@
 ﻿using BY.Data.Base;
 using BY.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace BY.Data.Repository
         public BookingRepository()
         {
         }
-          public BookingRepository(Net1704_221_2_BYContext unitOfWorkContext) => _context = unitOfWorkContext;
+        public BookingRepository(Net1704_221_2_BYContext unitOfWorkContext) => _context = unitOfWorkContext;
 
+        public async Task<List<Booking>> GetAllAsync()
+        {
+            return await _context.Set<Booking>().Include(c=>c.Customer).ToListAsync();
+        }
+        
     }
 }
