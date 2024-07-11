@@ -69,7 +69,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             var resultCreate = await _scheduleBusiness.UpdateSchedule(Schedule);
             if (resultCreate != null && resultCreate?.Status == 1)
             {
-                return RedirectToPage("./SchedulePage");
+                return RedirectToPage("./Index");
             }
             else
             {

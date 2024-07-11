@@ -20,13 +20,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="mb-3">
-                <form method="post" enctype="multipart/form-data">
-                    <input type="file" name="photo"/>
-                    <br/>
-                    <input type="submit"  value="Upload" />
-                </form>
-            </div>
-            <div class="mb-3">
                 <form class="d-flex justify-content-between">
                     <div class="input-group w-50">
                         <input type="text" name="SearchName" class="form-control" value="@(Model.SearchName)" placeholder="Search by Name" aria-describedby="" />
@@ -112,7 +105,7 @@
     <div class="modal fade" id="courtModalEdit" tabindex="-1" aria-labelledby="courtModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frmEdit", id = "frmEdit" }))
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="modal-header">
@@ -173,93 +166,80 @@
     <div class="modal fade" id="courtModal" tabindex="-1" aria-labelledby="courtModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="modal-header">
                         <h5 class="modal-title" id="courtModalLabel">Court Transaction</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" enctype="multipart/form-data">
-                        <div class="modal-body">
-                            <div id="courtModalContent"></div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <div class="col-md-6">
-                                            <label for="1">Name</label>
-                                            <input asp-for="CourtViewModel.Court.Name" class="form-control" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="1">Decription</label>
-                                            <input asp-for="CourtViewModel.Court.Description" class="form-control" required />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!---->
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <div class="col-md-6">
-                                            <label for="1">Type</label>
-                                            <input asp-for="CourtViewModel.Court.Type" class="form-control" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="1">Color</label>
-                                            <input asp-for="CourtViewModel.Court.Color" class="form-control" required />
-                                        </div>
-                                    </div>
-                                </div>
-                                <!---->
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <div class="col-md-6">
-                                            <label for="1">Surface Type</label>
-                                            <input asp-for="CourtViewModel.Court.SurfaceType" class="form-control" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="1">Address</label>
-                                            <input asp-for="CourtViewModel.Court.Address" class="form-control" required />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-
-                                        <div class="col-md-6">
-                                            <label for="customFile">Image</label>
-                                            <input type="file" class="form-control" id="customFile" asp-for="CourtViewModel.ImageFile" onchange="previewImage(event)" />
-                                            <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
-
-                                        </div>
-
-                                    </div>
-
+                    <div class="modal-body">
+                        <div id="courtModalContent"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
                                     <div class="col-md-6">
-                                        <input type="hidden" asp-for="CourtViewModel.Court.IsInUse" value="false" />
+                                        <label for="courtName">Name</label>
+                                        <input asp-for="CourtViewModel.Court.Name" class="form-control" id="courtName" required />
                                     </div>
-
-                                </div>
-                            </div>
-                            <div class="col-md-12" id="toastContainer">
-                                <div id="messageToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="d-flex">
-                                        <div class="toast-body" id="toastMessage"></div>
-                                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    <div class="col-md-6">
+                                        <label for="courtDescription">Description</label>
+                                        <input asp-for="CourtViewModel.Court.Description" class="form-control" id="courtDescription" required />
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="courtType">Type</label>
+                                        <input asp-for="CourtViewModel.Court.Type" class="form-control" id="courtType" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="courtColor">Color</label>
+                                        <input asp-for="CourtViewModel.Court.Color" class="form-control" id="courtColor" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="courtSurfaceType">Surface Type</label>
+                                        <input asp-for="CourtViewModel.Court.SurfaceType" class="form-control" id="courtSurfaceType" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="courtAddress">Address</label>
+                                        <input asp-for="CourtViewModel.Court.Address" class="form-control" id="courtAddress" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="customFile">Image</label>
+                                        <input type="file" class="form-control" id="customFile" asp-for="CourtViewModel.ImageFile" accept=".jpg, .png" onchange="previewImage(event)" />
+                                        <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="hidden" asp-for="CourtViewModel.Court.IsInUse" value="false" />
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="modal-footer">
-                            <button id="btSave" type="submit" class="btn btn-primary">Save</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <div class="col-md-12" id="toastContainer">
+                            <div id="messageToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body" id="toastMessage"></div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btSave" type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" asp-page="UploadMulti" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 }
+
             </div>
         </div>
     </div>

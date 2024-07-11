@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BY.RazorWebApp.Pages.SchedulePage
 {
-    public class SchedulePageModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly IScheduleBusiness _scheduleBusiness = new ScheduleBusiness();
         private readonly ICourtBusiness _courtBusiness = new CourtBusiness();
@@ -140,7 +140,7 @@ namespace BY.RazorWebApp.Pages.SchedulePage
             {
                 Error = resultCreate?.Message;
             }
-            return RedirectToPage("./SchedulePage");
+            return RedirectToPage("./Index");
         }
         public async Task<IActionResult> OnPostDeleteAsync()
         {
