@@ -6,36 +6,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BY.Data.Models;
+using BY.Business;
 
 namespace BY.RazorWebApp.Pages.BookingDetailPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly BY.Data.Models.Net1704_221_2_BYContext _context;
+        private readonly IBookingDetailBusiness _bookingDetailBusiness;
+        private readonly IBookingBusiness _bookingBusiness;
+        private readonly IScheduleBusiness _scheduleBusiness;
 
-        public DetailsModel(BY.Data.Models.Net1704_221_2_BYContext context)
+        public DetailsModel()
         {
-            _context = context;
+            _bookingDetailBusiness ??= new BookingDetailBusiness();
+            _bookingBusiness ??= new BookingBusiness();
+            _scheduleBusiness ??= new ScheduleBusiness();
         }
 
         public BookingDetail BookingDetail { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bookingdetail = await _context.BookingDetails.FirstOrDefaultAsync(m => m.BookingDetailId == id);
-            if (bookingdetail == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                BookingDetail = bookingdetail;
-            }
+            BookingDetail = (await _bookingDetailBusiness.GetBookingDetailById(id)).Data as BookingDetail;
             return Page();
         }
     }

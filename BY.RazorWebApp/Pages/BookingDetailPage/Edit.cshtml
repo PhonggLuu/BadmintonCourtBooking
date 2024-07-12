@@ -35,6 +35,34 @@
                 <span asp-validation-for="BookingDetail.Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="BookingDetail.CheckInDate" class="control-label"></label>
+                <input asp-for="BookingDetail.CheckInDate" class="form-control" />
+                <span asp-validation-for="BookingDetail.CheckInDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookingDetail.SpecialRequest" class="control-label"></label>
+                <input asp-for="BookingDetail.SpecialRequest" class="form-control" />
+                <span asp-validation-for="BookingDetail.SpecialRequest" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookingDetail.GuestQuantity" class="control-label"></label>
+                <input asp-for="BookingDetail.GuestQuantity" class="form-control" />
+                <span asp-validation-for="BookingDetail.GuestQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookingDetail.Description" class="control-label"></label>
+                <input asp-for="BookingDetail.Description" class="form-control" />
+                <span asp-validation-for="BookingDetail.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookingDetail.Status" class="control-label"></label>
+                <select asp-for="BookingDetail.Status" class="form-control">
+                    <option value="True">True</option>s
+                    <option value="False">False</option>
+                </select>
+                <span asp-validation-for="BookingDetail.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

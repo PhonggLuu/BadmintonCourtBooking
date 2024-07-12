@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BY.Data.Models;
 
@@ -12,15 +13,18 @@ public partial class BookingDetail
     public int? ScheduleId { get; set; }
 
     public int? BookingId { get; set; }
-
+    [Required]
     public decimal? Price { get; set; }
 
+    [Required]
     public decimal? Amount { get; set; }
 
-    public DateTime? CheckInDate { get; set; }
+    [Required]
+    public DateTime CheckInDate { get; set; }
 
     public string? SpecialRequest { get; set; }
 
+    [Required]
     public int GuestQuantity { get; set; }
 
     public string? Description { get; set; }
