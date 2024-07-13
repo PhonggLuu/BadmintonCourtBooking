@@ -1,7 +1,8 @@
-using BY.Business;
+﻿using BY.Business;
 using BY.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BY.RazorWebApp.Pages.BookingDetailPage
 {
@@ -17,23 +18,23 @@ namespace BY.RazorWebApp.Pages.BookingDetailPage
             _bookingBusiness ??= new BookingBusiness();
             _scheduleBusiness ??= new ScheduleBusiness();
         }
-
+        DateTime checkIn = new DateTime();
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 10; // Number of records per page
         public int TotalPages { get; set; }
         [BindProperty]
-        public DateTime CheckIn { get; set; } = DateTime.Now;
+        public DateTime CheckIn { get; set; }
         [BindProperty]
-        public int Price { get; set; } = 0;
+        public int Price { get; set; }
         public string Message { get; set; } = default;
         [BindProperty]
         public BookingDetail BookingDetail { get; set; }
-        public List<BookingDetail>? BookingDetails { get; set; }
-        public async Task OnGetAsync()
+        public List<BookingDetail>? BookingDetails { get; set; } = new List<BookingDetail>();
+        public async Task OnGetAsync(int currentPage = 1, DateTime? checkin = null, int price = 0)
         {
-            await GetBookingDetails();
+            await GetBookingDetails(currentPage, checkin, price);
         }
         public IActionResult OnPost()
         {
@@ -63,24 +64,26 @@ namespace BY.RazorWebApp.Pages.BookingDetailPage
             return RedirectToPage();
         }
 
-        private async Task GetBookingDetails(int currentPage = 1, DateTime checkin = new DateTime(), int price = 0)
+        private async Task GetBookingDetails(int currentPage, DateTime? checkin, int price)
         {
-            checkin = CheckIn;
-            price = Price;
+            CheckIn = checkin ?? DateTime.Now;
+            Price = price;
+            CurrentPage = currentPage;
             var result = await _bookingDetailBusiness.GetAllBookingDetail();
             if (result.Status > 0 && result.Data != null)
             {
                 var bookingDetails = result.Data as List<BookingDetail>;
-                if(checkin != null)
+              
+                if(CheckIn != null)
                 {
-                    bookingDetails = bookingDetails.Where(x => x.CheckInDate < checkin).ToList();
+                    bookingDetails = bookingDetails.Where(x => x.CheckInDate < CheckIn).ToList();
                 }
-                if(price >= 0)
+                if(Price > 0)
                 {
-                    bookingDetails = bookingDetails.Where(x => x.Price >= price).ToList();
+                    bookingDetails = bookingDetails.Where(x => x.Price <= Price).ToList();
                 }
                 int totalCount = bookingDetails.Count;
-                TotalPages = (int)System.Math.Ceiling(totalCount / (double)PageSize);
+                TotalPages = (int)Math.Ceiling(totalCount / (double)PageSize);
 
                 CurrentPage = CurrentPage > TotalPages ? TotalPages : CurrentPage;
                 CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
@@ -89,6 +92,17 @@ namespace BY.RazorWebApp.Pages.BookingDetailPage
                     .Skip((CurrentPage - 1) * PageSize)
                     .Take(PageSize)
                     .ToList();
+            }
+
+            var bookings = (await _bookingBusiness.GetALlBooking()).Data as List<Booking>;
+            if (bookings != null)
+            {
+                ViewData["BookingId"] = new SelectList(bookings, "BookingId", "BookingId");
+            }
+            var schedules = (await _scheduleBusiness.GetAllSchedule()).Data as List<Schedule>;
+            if (schedules != null)
+            {
+                ViewData["ScheduleId"] = new SelectList(schedules, "ScheduleId", "ScheduleId");
             }
         }
 

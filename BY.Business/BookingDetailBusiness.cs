@@ -72,7 +72,7 @@ namespace BY.Business
         public async Task<IBusinessResult> GetAllBookingDetail()
         {
             try
-            {
+            {   
                 var result = await _unitOfWork.BookingDetailRepository.GetAllAsync();
                 if (result != null)
                 {
